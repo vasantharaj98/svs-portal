@@ -10,11 +10,10 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import CloseIcon from '@mui/icons-material/Close';
 import ListItemText from '@mui/material/ListItemText';
 import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet } from '@mui/icons-material';
 import { theme } from '../Themesetup';
@@ -48,7 +47,7 @@ const menus = [
         id : 4,
         icon : AccountBalanceWallet,
         text : 'Fees',
-        path : "/balance"
+        path : "/fees"
     }
 ];
 
@@ -69,7 +68,7 @@ const closedMixin = (theme) => ({
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(10)} + 1px)`,
   },
 });
 
@@ -131,12 +130,18 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const selectedMenu = (index) => {
+    setSelectindex(index);
+    setOpen(false);
+  };
+
+
   return (
     <ThemeProvider theme={theme}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -150,7 +155,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           SVS
+           SVS School
           </Typography>
         </Toolbar>
       </AppBar>
@@ -159,24 +164,27 @@ export default function MiniDrawer() {
         '& .MuiDrawer-paper': {
           background : '#000',
           color : '#fff',
+          paddingRight: 1,
+          paddingLeft: 1,
         },
       }}
       > 
         <DrawerHeader sx={{justifyContent : 'flex-start'}}>
           <IconButton onClick={handleDrawerClose} sx={{color : '#fff'}}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <CloseIcon /> : <CloseIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
           {menus.map((menu, index) => (
-            <ListItem onClick={ () => setSelectindex(index) } className={ selectindex === index ? 'active' : ''} key={menu.id} disablePadding sx={{ display: 'block' }}>
+            <ListItem onClick={ () => selectedMenu (index) } className={ selectindex === index ? 'active' : ''} key={menu.id} disablePadding sx={{ display: 'block' }}>
               <Link to={menu.path}>
               <ListItemButton
                 sx={{
                   minHeight: 70,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  marginBottom: 2
                 }}
               >
                 <ListItemIcon

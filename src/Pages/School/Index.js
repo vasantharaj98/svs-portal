@@ -1,5 +1,7 @@
 import React from 'react';
+import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
+import Adddata from './Addschool';
 
 const columns = [
     { id: 'name', label: 'Name', minWidth: 170 },
@@ -50,10 +52,19 @@ const columns = [
     createData('Brazil', 'BR', 210147125, 8515767),
   ];
 
+  const Tablebox = styled('div')(({ theme }) => ({
+    marginTop : 80,
+    marginLeft : 60,
+    padding: theme.spacing(0, 3),
+  }));
+
 const School = () => {
   return (
     <>
+    <Tablebox>
+    <Adddata button="Add School"></Adddata>
     <Schooltable columns={columns} rows={rows} />
+    </Tablebox>
     </>
 
   )

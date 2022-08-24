@@ -1,10 +1,10 @@
 import React from 'react';
 import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
-import Adddata from './Addbus';
+import Adddata from './Addfees';
 
 const columns = [
-    { id: 'busname', label: 'busName', minWidth: 170 },
+    { id: 'name', label: 'FeesName', minWidth: 170 },
     { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
     {
       id: 'population',
@@ -29,9 +29,9 @@ const columns = [
     },
   ];
   
-  function createData(busname, code, population, size) {
+  function createData(name, code, population, size) {
     const density = population / size;
-    return { busname, code, population, size, density };
+    return { name, code, population, size, density };
   }
   
   const rows = [
@@ -58,11 +58,11 @@ const columns = [
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = () => {
+const Fees = () => {
   return (
     <>
     <Tablebox>
-    <Adddata button="Add Bus"></Adddata>
+    <Adddata button="Add Fees"></Adddata>
     <Schooltable columns={columns} rows={rows} />
     </Tablebox>
     </>
@@ -70,4 +70,4 @@ const Bus = () => {
   )
 }
 
-export default Bus;
+export default Fees;

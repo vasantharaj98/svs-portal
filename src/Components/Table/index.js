@@ -10,12 +10,6 @@ import TableRow from '@mui/material/TableRow';
 import { styled} from '@mui/material/styles';
 
 
-  const Tablebox = styled('div')(({ theme }) => ({
-    marginTop : 80,
-    marginLeft : 60,
-    padding: theme.spacing(0, 3),
-  }));
-
   const TableCusContainer = styled(TableContainer)(({ theme }) => ({
     maxHeight: 700,
     [theme.breakpoints.down('md')]: {
@@ -44,7 +38,6 @@ const Schooltable = (props) => {
 
   return (
     <>
-        <Tablebox>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableCusContainer>
         <Table stickyHeader aria-label="sticky table">
@@ -93,7 +86,6 @@ const Schooltable = (props) => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>
-        </Tablebox>
       </>
   )
 }
