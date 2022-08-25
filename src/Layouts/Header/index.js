@@ -26,29 +26,35 @@ const drawerWidth = 240;
 const menus = [
     {
         id : 1,
-        icon : School,
-        text : 'School',
-        path : "/"
+        icon : DirectionsBus,
+        text : 'Bus Fees',
+        path : "/bus_fees"
 
     },
     {
         id : 2,
-        icon : DirectionsBus,
-        text : 'Bus',
-        path : "/bus"
+        icon : School,
+        text : 'Class',
+        path : "/class"
     },
     {
         id : 3,
-        icon : AssignmentInd,
+        icon :  AccountBalanceWallet,
+        text : 'Academic Fees',
+        path : "/academic_fees"
+    },
+    {
+        id : 4,
+        icon :  AssignmentInd,
         text : 'Student',
         path : "/student"
     },
     {
-        id : 4,
-        icon : AccountBalanceWallet,
-        text : 'Fees',
-        path : "/fees"
-    }
+      id : 5,
+      icon : AccountBalanceWallet,
+      text : 'Test',
+      path : "/test"
+  }
 ];
 
 const openedMixin = (theme) => ({
