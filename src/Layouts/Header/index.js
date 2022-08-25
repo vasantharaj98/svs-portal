@@ -28,7 +28,7 @@ const menus = [
         id : 1,
         icon : DirectionsBus,
         text : 'Bus Fees',
-        path : "/bus_fees"
+        path : "/"
 
     },
     {

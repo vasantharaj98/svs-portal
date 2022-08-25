@@ -54,42 +54,39 @@ const Adddata = (props) => {
         <TextField
           required
           id="outlined-required"
-          label="School Name"
+          label="Route Name"
           
         />
         <TextField
-          disabled
-          id="outlined-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
+          required
+          id="outlined-required"
+          label="Bus No"
           
         />
         <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          
-        />
+          id="outlined-number"
+          label="Two way Fees"
+          type="number"
+          />
+          <TextField
+          id="outlined-number"
+          label="Full Fees"
+          type="number"
+          />
+          <TextField
+          id="outlined-number"
+          label="Special Trip Fees"
+          type="number"
+          />
         <TextField
           id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
+          label="Total Fees"
+          defaultValue="0"
           
           InputProps={{
             readOnly: true,
           }}
         />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field"  type="search" />
       </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: 40, marginTop: 15}}>
         <Button variant="contained" color='primary' size="large">Submit</Button>

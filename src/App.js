@@ -12,7 +12,7 @@ function App() {
       <Router>
       <Header></Header>
       <Routes>
-        <Route path='/bus_fees' element={<Bus/>} exact></Route>
+        <Route path='/' element={<Bus/>} exact></Route>
         <Route path='/class' element={<Class/>} ></Route>
         <Route path='/academic_fees' element={<Fees/>} ></Route>
         <Route path='/student' element={<Student/>} ></Route>

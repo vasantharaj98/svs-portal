@@ -2,6 +2,7 @@ import React from 'react';
 import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
+import { Box, Typography } from '@mui/material';
 
 const columns = [
     { id: 'routename', label: 'Route Name', minWidth: 170 },
@@ -42,14 +43,14 @@ const columns = [
   }
   
   const rows = [
-    createData('India', 'IN', 1324171354.15, 3287263, 500),
-    createData('China', 'CN', 1403500365, 9596961, 500),
-    createData('Italy', 'IT', 60483973, 301340, 500)
+    createData('India', 'IN 6353', 3000, 2000, 4000),
+    createData('China', 'CN 8363', 3000, 2000, 4000),
+    createData('Italy', 'IT 3363', 3000, 2000, 4000)
   ];
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
-    marginLeft : 60,
+    marginLeft : 80,
     padding: theme.spacing(0, 3),
   }));
 
@@ -57,7 +58,10 @@ const Bus = () => {
   return (
     <>
     <Tablebox>
-    <Adddata button="Add Bus Fees"></Adddata>
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
+        <Adddata button="Add Bus Fees"></Adddata>
+    </Box>
     <Schooltable columns={columns} rows={rows} />
     </Tablebox>
     </>

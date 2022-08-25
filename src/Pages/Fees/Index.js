@@ -2,6 +2,7 @@ import React from 'react';
 import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addfees';
+import { Box, Typography } from '@mui/material';
 
 const columns = [
     { id: 'name', label: 'FeesName', minWidth: 170 },
@@ -54,7 +55,7 @@ const columns = [
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
-    marginLeft : 60,
+    marginLeft : 80,
     padding: theme.spacing(0, 3),
   }));
 
@@ -62,7 +63,10 @@ const Fees = () => {
   return (
     <>
     <Tablebox>
-    <Adddata button="Add Fees"></Adddata>
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600' }} >Academic Fees</Typography>
+        <Adddata button="Add Academic Fees"></Adddata>
+    </Box>
     <Schooltable columns={columns} rows={rows} />
     </Tablebox>
     </>
