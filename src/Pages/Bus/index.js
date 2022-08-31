@@ -3,6 +3,7 @@ import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
 import { Box, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const columns = [
     { id: 'routename', label: 'Route Name', minWidth: 170 },
@@ -55,6 +56,9 @@ const columns = [
   }));
 
 const Bus = () => {
+
+  const busfees = useSelector((state)=> state.busfees);
+  console.log(busfees);
   return (
     <>
     <Tablebox>
