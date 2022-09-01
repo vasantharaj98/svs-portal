@@ -3,6 +3,7 @@ import { styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
 import { Box, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const columns = [
     { id: 'routename', label: 'Route Name', minWidth: 170 },
@@ -37,16 +38,16 @@ const columns = [
     },
   ];
   
-  function createData(routename, busno, twowayfees, fullfees, specialtripfees) {
-    const totalfees = twowayfees + fullfees + specialtripfees;
-    return { routename, busno, twowayfees, fullfees, specialtripfees, totalfees };
-  }
+  // function createData(routename, busno, twowayfees, fullfees, specialtripfees) {
+  //   const totalfees = twowayfees + fullfees + specialtripfees;
+  //   return { routename, busno, twowayfees, fullfees, specialtripfees, totalfees };
+  // }
   
-  const rows = [
-    createData('India', 'IN 6353', 3000, 2000, 4000),
-    createData('China', 'CN 8363', 3000, 2000, 4000),
-    createData('Italy', 'IT 3363', 3000, 2000, 4000)
-  ];
+  // const rows = [
+  //   createData('India', 'IN 6353', 3000, 2000, 4000),
+  //   createData('China', 'CN 8363', 3000, 2000, 4000),
+  //   createData('Italy', 'IT 3363', 3000, 2000, 4000)
+  // ];
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
@@ -55,6 +56,9 @@ const columns = [
   }));
 
 const Bus = () => {
+
+  const busfees = useSelector((state)=> state.busfees);
+  console.log(busfees);
   return (
     <>
     <Tablebox>
@@ -62,7 +66,7 @@ const Bus = () => {
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
         <Adddata button="Add Bus Fees"></Adddata>
     </Box>
-    <Schooltable columns={columns} rows={rows} />
+    <Schooltable columns={columns} rows={busfees} />
     </Tablebox>
     </>
 
