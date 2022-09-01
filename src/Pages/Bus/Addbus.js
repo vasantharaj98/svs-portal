@@ -28,21 +28,16 @@ const Adddata = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialfees: '', totalfees: '' });
-
-
+  const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
+  
   const dispatch = useDispatch();
-
-
-  // const totalFees = () =>{
-  //   const fees = postData.twowayfees + postData.fullfees + postData.specialtripfees;
-  //   setPostdata({...postData, totalfees: fees});
-  // }
 
 
   const handleSubmit = (e) =>{
       e.preventDefault();
+      setOpen(false);
       dispatch(postBusfees(postData));
+      setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
   return (
@@ -111,17 +106,18 @@ const Adddata = (props) => {
         <TextField
           id="outlined-read-only-input"
           label="Total Fees"
-          defaultValue="0"
-          value={ postData.twowayfees + postData.fullfees + postData.specialtripfees }
-          onChange= { (e)=> setPostdata({...postData, totalfees: e.target.value})}
-          
+          type="number"
+          value={ parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees) }         
           InputProps={{
             readOnly: true,
           }}
         />
       </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: 40, marginTop: 15}}>
-        <Button variant="contained" color='primary' size="large" type='submit'>Submit</Button>
+        <Button variant="contained" color='primary' size="large" 
+        type='submit'
+        onClick= { ()=> setPostdata({...postData, totalfees: parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees)})}
+        >Submit</Button>
       </div> 
       </Box>
           </Box>

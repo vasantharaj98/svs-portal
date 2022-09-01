@@ -38,16 +38,16 @@ const columns = [
     },
   ];
   
-  function createData(routename, busno, twowayfees, fullfees, specialtripfees) {
-    const totalfees = twowayfees + fullfees + specialtripfees;
-    return { routename, busno, twowayfees, fullfees, specialtripfees, totalfees };
-  }
+  // function createData(routename, busno, twowayfees, fullfees, specialtripfees) {
+  //   const totalfees = twowayfees + fullfees + specialtripfees;
+  //   return { routename, busno, twowayfees, fullfees, specialtripfees, totalfees };
+  // }
   
-  const rows = [
-    createData('India', 'IN 6353', 3000, 2000, 4000),
-    createData('China', 'CN 8363', 3000, 2000, 4000),
-    createData('Italy', 'IT 3363', 3000, 2000, 4000)
-  ];
+  // const rows = [
+  //   createData('India', 'IN 6353', 3000, 2000, 4000),
+  //   createData('China', 'CN 8363', 3000, 2000, 4000),
+  //   createData('Italy', 'IT 3363', 3000, 2000, 4000)
+  // ];
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
@@ -66,7 +66,7 @@ const Bus = () => {
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
         <Adddata button="Add Bus Fees"></Adddata>
     </Box>
-    <Schooltable columns={columns} rows={rows} />
+    <Schooltable columns={columns} rows={busfees} />
     </Tablebox>
     </>
 
