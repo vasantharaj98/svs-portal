@@ -20,3 +20,13 @@ export const postBusfees = (newfees) => async (dispatch) => {
         console.log(error.message);
     }
 }
+
+export const updateBusfees = (id, updatefees) => async (dispatch) => {
+    try {
+        const {data} =await api.updateFees(id, updatefees);
+
+        dispatch({ type : 'UPDATE', payload: data});
+    } catch (error) {
+        console.log(error.message);
+    }
+}

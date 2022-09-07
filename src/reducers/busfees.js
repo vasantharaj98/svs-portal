@@ -4,6 +4,8 @@ export default ( busfees = [], action) => {
             return action.payload;
         case 'CREATE':
                 return [...busfees, action.payload];
+        case 'UPDATE':
+                return busfees.map((fees) => fees._id === action.payload._id ? action.payload : fees );
         default:
             return busfees;
     }

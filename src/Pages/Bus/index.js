@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled} from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
 import { Box, Typography } from '@mui/material';
@@ -36,18 +36,13 @@ const columns = [
       align: 'right',
       format: (value) => value.toLocaleString('en-IN'),
     },
+    {
+      id: 'action',
+      label: 'Action',
+      minWidth: 170,
+      align: 'right',
+    }
   ];
-  
-  // function createData(routename, busno, twowayfees, fullfees, specialtripfees) {
-  //   const totalfees = twowayfees + fullfees + specialtripfees;
-  //   return { routename, busno, twowayfees, fullfees, specialtripfees, totalfees };
-  // }
-  
-  // const rows = [
-  //   createData('India', 'IN 6353', 3000, 2000, 4000),
-  //   createData('China', 'CN 8363', 3000, 2000, 4000),
-  //   createData('Italy', 'IT 3363', 3000, 2000, 4000)
-  // ];
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
@@ -55,18 +50,18 @@ const columns = [
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = () => {
+const Bus = ({currentId, setCurrentid}) => {
 
   const busfees = useSelector((state)=> state.busfees);
-  console.log(busfees);
+  // console.log(busfees);
   return (
     <>
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
-        <Adddata button="Add Bus Fees"></Adddata>
+        <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
-    <Schooltable columns={columns} rows={busfees} />
+    <Schooltable setCurrentid={setCurrentid} columns={columns} rows={busfees} />
     </Tablebox>
     </>
 
