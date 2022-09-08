@@ -29,6 +29,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   const handleClose = () => {
   setOpen(false);
   setCurrentid(null);
+  setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   };
 
 
@@ -53,6 +54,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setOpen(false);
       if(currentId){
         dispatch(updateBusfees(currentId, postData));
+        setCurrentid(null);
       }
       else{
 

@@ -10,6 +10,9 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { deleteBusfees } from '../../actions/busfees';
+
 
 
   const TableCusContainer = styled(TableContainer)(({ theme }) => ({
@@ -28,6 +31,8 @@ import { styled } from '@mui/material/styles';
   }));
 
 const Schooltable = ({setCurrentid, columns, rows}) => {
+  
+  const dispatch = useDispatch();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -69,14 +74,14 @@ const Schooltable = ({setCurrentid, columns, rows}) => {
               <TableCell component="th" scope="row">
                 {row.routename}
               </TableCell>
-              <TableCell align="right">{row.busno}</TableCell>
-              <TableCell align="right">{row.twowayfees}</TableCell>
-              <TableCell align="right">{row.fullfees}</TableCell>
-              <TableCell align="right">{row.specialtripfees}</TableCell>
-              <TableCell align="right">{row.totalfees}</TableCell>
-              <TableCell align="right">
+              <TableCell align="center">{row.busno}</TableCell>
+              <TableCell align="center">{row.twowayfees}</TableCell>
+              <TableCell align="center">{row.fullfees}</TableCell>
+              <TableCell align="center">{row.specialtripfees}</TableCell>
+              <TableCell align="center">{row.totalfees}</TableCell>
+              <TableCell align="center">
                 <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>
-                <Button sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
+                <Button onClick={ () => dispatch(deleteBusfees(row._id))} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
               </TableCell>
             </TableRow>
           ))}

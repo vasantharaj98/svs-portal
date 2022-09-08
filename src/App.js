@@ -16,7 +16,7 @@ function App() {
 
   useEffect(()=>{
         dispatch(getBusfees())
-  },[dispatch]);
+  },[currentId, dispatch]);
 
   return (
     <div className="App">

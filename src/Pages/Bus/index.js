@@ -7,40 +7,40 @@ import { useSelector } from 'react-redux';
 
 const columns = [
     { id: 'routename', label: 'Route Name', minWidth: 170 },
-    { id: 'busno', label: 'Bus\u00a0No', minWidth: 100 },
+    { id: 'busno',align: 'center', label: 'Bus\u00a0No', minWidth: 100 },
     {
       id: 'twowayfees',
       label: 'Two Way Fees',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'fullfees',
       label: 'Full Fess',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'specialtripfees',
       label: 'Special Trip Fees',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'totalfees',
       label: 'Total Fess',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'action',
       label: 'Action',
       minWidth: 170,
-      align: 'right',
+      align: 'center',
     }
   ];
 
