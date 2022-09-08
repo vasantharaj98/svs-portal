@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -7,8 +7,8 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
-import { useDispatch } from 'react-redux';
-import { postBusfees } from '../../actions/busfees';
+import { useDispatch, useSelector } from 'react-redux';
+import { postBusfees, updateBusfees } from '../../actions/busfees';
 
 
 
@@ -23,27 +23,50 @@ const style = {
   borderRadius: 2,
 };
 
-const Adddata = (props) => {
+const Adddata = ({currentId, setCurrentid, button}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+  setOpen(false);
+  setCurrentid(null);
+  setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
+  };
+
 
   const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
-  
+
+
   const dispatch = useDispatch();
+
+  const updatePost = useSelector ((state) => currentId ? state.busfees.find((p) => p._id === currentId ) : null );
+
+
+  useEffect(()=>{
+    if(currentId){
+      setOpen(true);
+      setPostdata(updatePost);
+    }
+},[currentId, updatePost])
 
 
   const handleSubmit = (e) =>{
       e.preventDefault();
       setOpen(false);
-      dispatch(postBusfees(postData));
+      if(currentId){
+        dispatch(updateBusfees(currentId, postData));
+        setCurrentid(null);
+      }
+      else{
+
+        dispatch(postBusfees(postData));
+      }
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
   return (
     <ThemeProvider theme={theme}>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
-      <Button onClick={handleOpen} variant="contained" color='primary'>{props.button}</Button>
+      <Button onClick={handleOpen} variant="contained" color='primary'>{button}</Button>
       </div> 
       <Modal
         aria-labelledby="transition-modal-title"
