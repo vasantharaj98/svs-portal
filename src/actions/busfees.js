@@ -14,8 +14,7 @@ export const getBusfees = () => async (dispatch) => {
 
 export const postBusfees = (newfees) => async (dispatch) => {
     try {
-        const {data} =await api.createBusfees(newfees);
-
+        const {data } =await api.createBusfees(newfees);
         dispatch({ type : CREATE, payload: data});
     } catch (error) {
         console.log(error);
@@ -24,7 +23,11 @@ export const postBusfees = (newfees) => async (dispatch) => {
 
 export const updateBusfees = (id, updatefees) => async (dispatch) => {
     try {
-        const {data} =await api.updateFees(id, updatefees);
+        console.log ("updatefees",updatefees);
+
+        const { data } =await api.updateFees(id, updatefees);
+
+        console.log ( data );
 
         dispatch({ type : UPDATE, payload: data});
     } catch (error) {

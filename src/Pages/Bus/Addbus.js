@@ -46,7 +46,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setOpen(true);
       setPostdata(updatePost);
     }
-},[currentId, updatePost])
+},[updatePost])
 
 
   const handleSubmit = (e) =>{
