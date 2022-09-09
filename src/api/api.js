@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// const url = 'http://localhost:5000/busfees';
+
 const url = 'https://svs-school.herokuapp.com/busfees';
 
 export const fetchBusfees = () => axios.get(url);
