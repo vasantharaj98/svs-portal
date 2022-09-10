@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { deleteBusfees } from '../../actions/busfees';
+import { deleteBusfees, loading, toast } from '../../actions/busfees';
 
 
 
@@ -81,7 +81,7 @@ const Schooltable = ({setCurrentid, columns, rows}) => {
               <TableCell align="center">{row.totalfees}</TableCell>
               <TableCell align="center">
                 <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>
-                <Button onClick={ () => dispatch(deleteBusfees(row._id))} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
+                <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
               </TableCell>
             </TableRow>
           ))}

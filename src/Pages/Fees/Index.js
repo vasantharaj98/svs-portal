@@ -28,6 +28,12 @@ const columns = [
       align: 'right',
       format: (value) => value.toFixed(2),
     },
+    {
+      id: 'action',
+      label: 'Action',
+      minWidth: 170,
+      align: 'center',
+    }
   ];
   
   function createData(name, code, population, size) {

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
 import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const columns = [
     { id: 'routename', label: 'Route Name', minWidth: 170 },
@@ -53,7 +54,15 @@ const columns = [
 const Bus = ({currentId, setCurrentid}) => {
 
   const busfees = useSelector((state)=> state.busfees);
-  // console.log(busfees);
+
+  console.log(busfees);
+  
+  useEffect( () => {
+    if(busfees.successMessage){
+      toast(busfees.Message);
+    }
+  },[busfees]);
+
   return (
     <>
     <Tablebox>
@@ -61,7 +70,7 @@ const Bus = ({currentId, setCurrentid}) => {
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
-    <Schooltable setCurrentid={setCurrentid} columns={columns} rows={busfees} />
+    <Schooltable setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
     </Tablebox>
     </>
 
