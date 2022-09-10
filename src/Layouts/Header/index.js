@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,6 +19,8 @@ import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet } from '@mui
 import { theme } from '../Themesetup';
 import { Link } from 'react-router-dom';
 import './style.css';
+import  Loader  from '../../Components/Loader/loader.js';
+import { useSelector } from 'react-redux';
 
 
 const drawerWidth = 240;
@@ -125,8 +127,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function MiniDrawer() {
 
+  const showLoader = useSelector((state)=> state.busfees.showLoading);
+
+  console.log(showLoader);
+
   const [open, setOpen] = useState(false);
-  const [selectindex, setSelectindex] = useState(0);
+  const [selectindex, setSelectindex] = useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -141,11 +147,30 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  useEffect ( () => {
+    switch (window.location.pathname) {
+      case "/":
+       return setSelectindex(0);
+       case "/class":
+        return setSelectindex(1);
+        case "/academic_fees":
+        return setSelectindex(2);
+        case "/student":
+        return setSelectindex(3);
+        case "/test":
+        return setSelectindex(4);
+      default:
+        return setSelectindex(0);
+    }
+  }, [selectindex]);
+
 
   return (
     <ThemeProvider theme={theme}>
+
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+      { showLoader && <Loader></Loader> }
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton

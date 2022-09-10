@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { postBusfees, updateBusfees } from '../../actions/busfees';
+import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
 
 
 
@@ -38,7 +38,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
 
   const dispatch = useDispatch();
 
-  const updatePost = useSelector ((state) => currentId ? state.busfees.find((p) => p._id === currentId ) : null );
+  const updatePost = useSelector ((state) => currentId ? state.busfees.busfees.find((p) => p._id === currentId ) : null );
 
 
   useEffect(()=>{
@@ -54,11 +54,22 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setOpen(false);
       if(currentId){
         dispatch(updateBusfees(currentId, postData));
+        dispatch(loading(true));
+        dispatch(toast(false));
         setCurrentid(null);
+        setTimeout(() => {
+          setCurrentid(null);
+        }, dispatch(updateBusfees(currentId, postData)));
+        // if(dispatch(updateBusfees(currentId, postData))){
+        //   setCurrentid(null);
+        // };
       }
       else{
 
         dispatch(postBusfees(postData));
+        dispatch(loading(true));
+        dispatch(toast(false));
+
       }
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
