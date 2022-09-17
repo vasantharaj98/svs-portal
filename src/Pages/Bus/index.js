@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {styled} from '@mui/material/styles';
 import Schooltable from '../../Components/Table/index';
 import Adddata from './Addbus';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -45,6 +45,9 @@ const columns = [
     }
   ];
 
+  const top100Films = ['2019', '2020'];
+  
+
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
     marginLeft : 80,
@@ -68,6 +71,13 @@ const Bus = ({currentId, setCurrentid}) => {
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
+        <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={top100Films}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Select Year" />}
+        />
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
     <Schooltable setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
