@@ -15,7 +15,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
 import ListItemText from '@mui/material/ListItemText';
-import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet } from '@mui/icons-material';
+import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet, Discount,Settings, ArrowDropUp, ArrowDropDown  } from '@mui/icons-material';
 import { theme } from '../Themesetup';
 import { Link } from 'react-router-dom';
 import './style.css';
@@ -27,35 +27,42 @@ const drawerWidth = 240;
 
 const menus = [
     {
-        id : 1,
-        icon : DirectionsBus,
-        text : 'Bus Fees',
-        path : "/"
-
-    },
-    {
-        id : 2,
-        icon : School,
-        text : 'Class',
-        path : "/class"
-    },
-    {
-        id : 3,
-        icon :  AccountBalanceWallet,
-        text : 'Academic Fees',
-        path : "/academic_fees"
-    },
-    {
-        id : 4,
+        id : "student",
         icon :  AssignmentInd,
         text : 'Student',
-        path : "/student"
+        path : "/"
     },
     {
-      id : 5,
-      icon : AccountBalanceWallet,
-      text : 'Test',
-      path : "/test"
+      id : "setting",
+      icon : Settings,
+      text : 'Setting',
+      submenus : [
+        {
+          id : "busfees",
+          icon : DirectionsBus,
+          text : 'Bus Fees',
+          path : "/busfees"
+  
+      },
+      {
+          id : "class",
+          icon : School,
+          text : 'Class',
+          path : "/class"
+      },
+      {
+        id : "discount",
+        icon : Discount,
+        text : 'Discount',
+        path : "/discount"
+    },
+      {
+          id : "academicfees",
+          icon :  AccountBalanceWallet,
+          text : 'Academic Fees',
+          path : "/academic_fees"
+      },
+    ]
   }
 ];
 
@@ -132,7 +139,8 @@ export default function MiniDrawer() {
   console.log(showLoader);
 
   const [open, setOpen] = useState(false);
-  const [selectindex, setSelectindex] = useState(null);
+  const [selectid, setSelectid] = useState('');
+  const [submenu, setSubmenu] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -142,27 +150,27 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const selectedMenu = (index) => {
-    setSelectindex(index);
+  const selectedMenu = (id) => {
+    setSelectid(id);
     setOpen(false);
   };
 
   useEffect ( () => {
     switch (window.location.pathname) {
       case "/":
-       return setSelectindex(0);
+       return setSelectid('student');
+       case "/busfees":
+        return setSelectid('busfees');
        case "/class":
-        return setSelectindex(1);
+        return setSelectid('class');
+        case "/discount":
+        return setSelectid('discount');
         case "/academic_fees":
-        return setSelectindex(2);
-        case "/student":
-        return setSelectindex(3);
-        case "/test":
-        return setSelectindex(4);
+        return setSelectid('academicfees');
       default:
-        return setSelectindex(0);
+        return setSelectid('student');
     }
-  }, [selectindex]);
+  }, [selectid]);
 
 
   return (
@@ -207,9 +215,13 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {menus.map((menu, index) => (
-            <ListItem onClick={ () => selectedMenu (index) } className={ selectindex === index ? 'active' : ''} key={menu.id} disablePadding sx={{ display: 'block' }}>
-              <Link to={menu.path}>
+          {menus.map((menu, index) => {
+          
+          return(
+            <>
+            { menu.path && 
+            <ListItem onClick={ () => selectedMenu (menu.id) } className={ selectid === menu.id ? 'active' : ''} key={menu.id} disablePadding sx={{ display: 'block' }}>
+            <Link to={ menu.path}>
               <ListItemButton
                 sx={{
                   minHeight: 70,
@@ -232,7 +244,94 @@ export default function MiniDrawer() {
               </ListItemButton>
               </Link>
             </ListItem>
-          ))}
+          }
+            {menu.id === "setting"
+            &&
+            <>
+            <ListItem onClick={ () => setSubmenu(!submenu) } key={menu.id} disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+                sx={{
+                  minHeight: 70,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                  marginBottom: 2
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color : '#fff'
+                  }}
+                >
+                {< menu.icon />}
+                </ListItemIcon>
+                { !open &&
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color : '#fff'
+                  }}
+                >
+                {submenu ? < ArrowDropUp /> : < ArrowDropDown />}
+                </ListItemIcon>
+                }
+                <ListItemText primary={menu.text} sx={{ opacity: open ? 1 : 0 , color: '#fff', textDecoration: 'none' }} />
+                { open && 
+                <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                  color : '#fff'
+                }}
+              >
+              {submenu ? < ArrowDropUp /> : < ArrowDropDown />}
+              </ListItemIcon>
+                }
+              </ListItemButton>
+            </ListItem>
+            {submenu &&
+            <>
+            {menu.submenus.map((subm, index)=>{
+              return (
+                <>
+                <ListItem onClick={ () => selectedMenu (subm.id) } className={ selectid === subm.id ? 'active' : ''} key={subm.id} disablePadding sx={{ display: 'block' }}>
+                <Link to={ subm.path}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 70,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                      marginBottom: 2
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                        color : '#fff'
+                      }}
+                    >
+                    {< subm.icon />}
+                    </ListItemIcon>
+                    <ListItemText primary={subm.text} sx={{ opacity: open ? 1 : 0 , color: '#fff', textDecoration: 'none' }} />
+                  </ListItemButton>
+                  </Link>
+                </ListItem>
+                </>
+              )
+             })}
+             </>
+             }
+             </>
+            }
+            </>
+          )})}
         </List>
       </Drawer>
     </Box>

@@ -2,8 +2,9 @@ import React, {useState, useEffect} from "react";
 import Header from "./Layouts/Header/index.js"
 import Class from "./Pages/Class/index.js";
 import Bus from "./Pages/Bus/index.js";
-import Student from "./Pages/Student/Index.js";
-import Fees from "./Pages/Fees/Index.js";
+import Discount from "./Pages/Discount/index.js";
+// import Student from "./Pages/Student/Index.js";
+import Fees from "./Pages/Fees/index.js";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getBusfees, loading, toast } from './actions/busfees';
 import { useDispatch} from 'react-redux';
@@ -25,11 +26,13 @@ function App() {
       <Router>
       <Header></Header>
       <Routes>
-        <Route path='/'  element={<Bus currentId={currentId} setCurrentid={setCurrentid}/>} exact></Route>
+        <Route path='/'element={<Class/>}   exact></Route>
+        <Route path='/busfees'  element={<Bus currentId={currentId} setCurrentid={setCurrentid}/>} ></Route>
         <Route path='/class' element={<Class/>} ></Route>
-        {/* <Route path='/academic_fees' element={<Fees/>} ></Route>
-        <Route path='/student' element={<Student/>} ></Route>
-        <Route path='/test' element={<Student/>} ></Route> */}
+        <Route path='/discount' element={<Discount/>} ></Route>
+        <Route path='/academic_fees' element={<Fees/>} ></Route>
+        {/* <Route path='/setting' element={<Discount/>} ></Route> */}
+        {/* <Route path='/test' element={<Student/>} ></Route> */}
       </Routes>
       </Router>
     </div>

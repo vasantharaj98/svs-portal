@@ -5,10 +5,10 @@ import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import {Autocomplete} from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
+import MultipleValueTextInput from 'react-multivalue-text-input';
 import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
 
 
@@ -23,8 +23,6 @@ const style = {
   p: 4,
   borderRadius: 2,
 };
-
-const top100Films = ['A', 'B'];
 
 const Adddata = ({currentId, setCurrentid, button}) => {
   const [open, setOpen] = useState(false);
@@ -55,25 +53,22 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   const handleSubmit = (e) =>{
       e.preventDefault();
       setOpen(false);
-      if(currentId){
-        dispatch(updateBusfees(currentId, postData));
-        dispatch(loading(true));
-        dispatch(toast(false));
-        setCurrentid(null);
-        setTimeout(() => {
-          setCurrentid(null);
-        }, dispatch(updateBusfees(currentId, postData)));
-        // if(dispatch(updateBusfees(currentId, postData))){
-        //   setCurrentid(null);
-        // };
-      }
-      else{
+      // if(currentId){
+      //   dispatch(updateBusfees(currentId, postData));
+      //   dispatch(loading(true));
+      //   dispatch(toast(false));
+      //   setCurrentid(null);
+      //   setTimeout(() => {
+      //     setCurrentid(null);
+      //   }, dispatch(updateBusfees(currentId, postData)));
+      // }
+      // else{
 
-        dispatch(postBusfees(postData));
-        dispatch(loading(true));
-        dispatch(toast(false));
+      //   dispatch(postBusfees(postData));
+      //   dispatch(loading(true));
+      //   dispatch(toast(false));
 
-      }
+      // }
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
@@ -104,51 +99,26 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       autoComplete="off"
       onSubmit={handleSubmit}
     >
-      <div>
-      <Autocomplete
-        multiple
-        id="tags-outlined"
-        options={top100Films}
-        sx={{margin: 10}}
-        getOptionLabel={(option) => option}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            sx={{ '&.MuiTextField-root':{
-              margin: 0,
-            },
-          }}
-            label="Select Class Name"
-            placeholder="classnames"
-          />
-        )}
-      />
+      <div style={{display:'flex', flexDirection:'column'}}>
         <TextField
+        style={{margin:0, marginBottom: 20}}
           required
           id="outlined-required"
-          label="Tuition Fees"
-          value={postData.busno}
-          onChange= { (e)=> setPostdata({...postData, busno: e.target.value})}
+          label="Discount Type"
+          value={postData.routename}
+          onChange= { (e)=> setPostdata({...postData, routename: e.target.value})}
         />
-        <TextField
-          id="outlined-number"
-          label="Book Fees"
-          type="number"
-          value={postData.twowayfees}
-          onChange= { (e)=> setPostdata({...postData, twowayfees: e.target.value})}
-          />
-        <TextField
-          id="outlined-read-only-input"
-          label="Total Fees"
-          type="number"
-          value={ parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees) }         
-          InputProps={{
-            readOnly: true,
-          }}
+         <TextField
+        style={{margin:0, marginBottom: 20}}
+          required
+          id="outlined-required"
+          label="Discount Percentage"
+          value={postData.routename}
+          onChange= { (e)=> setPostdata({...postData, routename: e.target.value})}
         />
+       
       </div>
-      <div style={{display: 'flex', justifyContent: 'flex-end', margin: 10}}>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems:'center', marginTop: 10}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
         onClick= { ()=> setPostdata({...postData, totalfees: parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees)})}
