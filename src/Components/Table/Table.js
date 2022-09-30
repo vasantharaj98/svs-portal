@@ -47,7 +47,7 @@ const Schooltable = ({setCurrentid, columns, rows}) => {
     };  
 
 
-  return (
+return (
       <>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableCusContainer>
@@ -71,14 +71,20 @@ const Schooltable = ({setCurrentid, columns, rows}) => {
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.class}
-              </TableCell>
-              <TableCell align="center">{row.section}</TableCell>
-              <TableCell align="center">
-                <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>
-                <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
-              </TableCell>
+              {columns.map((column)=>{
+                return(
+                  <TableCell component="th" align={column.align} scope="row">
+                  {row[column.id]}
+                  {column.id === "action"
+                  && 
+                  <>
+                    <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>
+                    <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
+                  </>
+                  }
+                </TableCell>
+                )
+              })}
             </TableRow>
           ))}
         </TableBody>

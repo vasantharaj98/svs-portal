@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {styled} from '@mui/material/styles';
-import Schooltable from '../../Components/Table/index';
+import Table from '../../Components/Table/Table';
 import Adddata from './Addbus';
 import { Box, Typography, Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -58,7 +58,7 @@ const Bus = ({currentId, setCurrentid}) => {
 
   const busfees = useSelector((state)=> state.busfees);
 
-  console.log(busfees);
+  console.log("busfeesbusfees", busfees);
   
   useEffect( () => {
     if(busfees.successMessage){
@@ -80,7 +80,7 @@ const Bus = ({currentId, setCurrentid}) => {
         />
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
-    <Schooltable setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
     </Tablebox>
     </>
 
