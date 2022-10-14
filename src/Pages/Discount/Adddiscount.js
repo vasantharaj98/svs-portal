@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
-import MultipleValueTextInput from 'react-multivalue-text-input';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
 
 
@@ -72,6 +73,25 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
+  const formik = useFormik({
+    initialValues: {
+      disCount: '',
+      discountPer: '',
+    },
+    validationSchema: Yup.object({
+      disCount: Yup.string()
+        .max(15, 'Must be 15 characters or less')
+        .required('Required'),
+      discountPer: Yup.number()
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      console.log("discount", values.disCount);
+      formik.resetForm();
+      setOpen(false);
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
@@ -95,33 +115,37 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       sx={{
         '& .MuiTextField-root': { m: 2, width: '25ch' },
       }}
-      noValidate
       autoComplete="off"
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
     >
       <div style={{display:'flex', flexDirection:'column'}}>
         <TextField
-        style={{margin:0, marginBottom: 20}}
-          required
-          id="outlined-required"
+        style={{margin:0, marginBottom: 0}}
+          id="disCount"
           label="Discount Type"
-          value={postData.routename}
-          onChange= { (e)=> setPostdata({...postData, routename: e.target.value})}
+          value={formik.values.disCount}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
         />
+         {formik.touched.disCount && formik.errors.disCount  ? (
+         <div style={{color: 'red'}}>{formik.errors.disCount}</div>
+       ) : null}
          <TextField
-        style={{margin:0, marginBottom: 20}}
-          required
-          id="outlined-required"
+        style={{margin:0, marginBottom: 0, marginTop: 15}}
+          type='number'
+          id="discountPer"
           label="Discount Percentage"
-          value={postData.routename}
-          onChange= { (e)=> setPostdata({...postData, routename: e.target.value})}
+          value={formik.values.discountPer}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
         />
-       
+        {formik.touched.discountPer && formik.errors.discountPer ? (
+         <div style={{color: 'red'}}>{formik.errors.discountPer}</div>
+       ) : null}
       </div>
       <div style={{display: 'flex', justifyContent: 'center', alignItems:'center', marginTop: 10}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
-        onClick= { ()=> setPostdata({...postData, totalfees: parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees)})}
         >Submit</Button>
       </div> 
       </Box>

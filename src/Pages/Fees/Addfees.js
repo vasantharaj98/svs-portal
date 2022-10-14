@@ -9,6 +9,8 @@ import {Autocomplete} from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
 
 
@@ -77,6 +79,28 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
+  const formik = useFormik({
+    initialValues: {
+      className:[],
+      tutionFees: '',
+      bookFees: '',
+      totalFees:'',
+    },
+    validationSchema: Yup.object({
+      tutionFees: Yup.number()
+        .required('Required'),
+     bookFees: Yup.number()
+        .required('Required'),
+     totalFees: Yup.number()
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      console.log("academic fees", values);
+      formik.resetForm();
+      setOpen(false);
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
@@ -100,16 +124,18 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       sx={{
         '& .MuiTextField-root': { m: 2, width: '25ch' },
       }}
-      noValidate
       autoComplete="off"
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
     >
-      <div>
+      <div style={{display: 'flex', flexDirection:'column'}}>
       <Autocomplete
         multiple
-        id="tags-outlined"
+        id="className"
+        name="className"
+        onChange={(event, newValue) => {
+          formik.setFieldValue('className', newValue);
+        }}
         options={top100Films}
-        sx={{margin: 10}}
         getOptionLabel={(option) => option}
         filterSelectedOptions
         renderInput={(params) => (
@@ -121,37 +147,62 @@ const Adddata = ({currentId, setCurrentid, button}) => {
           }}
             label="Select Class Name"
             placeholder="classnames"
+            value={formik.values?.className}
           />
         )}
       />
         <TextField
-          required
-          id="outlined-required"
+        sx={{ '&.MuiTextField-root':{
+          margin: 0,
+          marginTop: '15px'
+        },
+      }}
+          type='number'
+          id="tutionFees"
           label="Tuition Fees"
-          value={postData.busno}
-          onChange= { (e)=> setPostdata({...postData, busno: e.target.value})}
+          value={formik.values.tutionFees}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
         />
+         {formik.touched.tutionFees && formik.errors.tutionFees  ? (
+         <div style={{color: 'red'}}>{formik.errors.tutionFees}</div>
+       ) : null}
         <TextField
-          id="outlined-number"
+         sx={{ '&.MuiTextField-root':{
+          margin: 0,
+          marginTop: '15px'
+        },
+      }}
+          id="bookFees"
           label="Book Fees"
           type="number"
-          value={postData.twowayfees}
-          onChange= { (e)=> setPostdata({...postData, twowayfees: e.target.value})}
-          />
+          value={formik.values.bookFees}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+         {formik.touched.bookFees && formik.errors.bookFees  ? (
+         <div style={{color: 'red'}}>{formik.errors.bookFees}</div>
+       ) : null}
         <TextField
-          id="outlined-read-only-input"
+         sx={{ '&.MuiTextField-root':{
+          margin: 0,
+          marginTop: '15px'
+        },
+      }}
+          id="totalFees"
           label="Total Fees"
           type="number"
-          value={ parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees) }         
-          InputProps={{
-            readOnly: true,
-          }}
+        value={formik.values.totalFees}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
         />
+         {formik.touched.totalFees && formik.errors.totalFees  ? (
+         <div style={{color: 'red'}}>{formik.errors.totalFees}</div>
+       ) : null}
       </div>
-      <div style={{display: 'flex', justifyContent: 'flex-end', margin: 10}}>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: 20}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
-        onClick= { ()=> setPostdata({...postData, totalfees: parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees)})}
         >Submit</Button>
       </div> 
       </Box>

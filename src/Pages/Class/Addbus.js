@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import MultipleValueTextInput from 'react-multivalue-text-input';
 import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
 
@@ -72,6 +74,26 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
+  const formik = useFormik({
+    initialValues: {
+      className: '',
+      sectionName: '',
+    },
+    validationSchema: Yup.object({
+      className: Yup.string()
+        .max(15, 'Must be 15 characters or less')
+        .required('Required'),
+      sectionName: Yup.string()
+        .required('Required'),
+    }),
+    onSubmit: values => {
+      console.log("class", values);
+      formik.resetForm();
+      setOpen(false);
+    },
+  });
+
+
   return (
     <ThemeProvider theme={theme}>
       <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
@@ -97,18 +119,21 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       }}
       noValidate
       autoComplete="off"
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
     >
       <div>
         <TextField
-        style={{margin:0, marginBottom: 15}}
-          required
-          id="outlined-required"
+        style={{margin:0, marginBottom: 0}}
+          id="className"
           label="Class Name"
-          value={postData.routename}
-          onChange= { (e)=> setPostdata({...postData, routename: e.target.value})}
+          value={formik.values.className}
+          onChange= {formik.handleChange}
+          onBlur={formik.handleBlur}
         />
-        <MultipleValueTextInput style={{height:'50px'}}
+         {formik.touched.className && formik.errors.className  ? (
+         <div style={{color: 'red'}}>{formik.errors.className}</div>
+       ) : null}
+        <MultipleValueTextInput style={{height:'50px', marginTop: 15}}
         onItemAdded={(item, allItems) => console.log(`Item added: ${item}`)}
         onItemDeleted={(item, allItems) => console.log(`Item removed: ${item}`)}
         name="item-input"
@@ -118,7 +143,6 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       <div style={{display: 'flex', justifyContent: 'center', marginRight: 40, marginTop: 15}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
-        onClick= { ()=> setPostdata({...postData, totalfees: parseInt(postData.twowayfees) + parseInt(postData.fullfees ) + parseInt(postData.specialtripfees)})}
         >Submit</Button>
       </div> 
       </Box>

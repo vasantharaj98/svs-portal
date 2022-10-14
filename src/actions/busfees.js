@@ -4,9 +4,9 @@ import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from '../constants/acti
 
 export const getBusfees = () => async (dispatch) => {
     try {
-        const {data} =await api.fetchBusfees();
+        // const {data} =await api.fetchBusfees();
 
-        dispatch({ type : FETCH, payload: data});
+        // dispatch({ type : FETCH, payload: data});
     } catch (error) {
         console.log(error);
     }
@@ -14,8 +14,8 @@ export const getBusfees = () => async (dispatch) => {
 
 export const postBusfees = (newfees) => async (dispatch) => {
     try {
-        const {data } =await api.createBusfees(newfees);
-        dispatch({ type : CREATE, payload: data});
+        // const {data } =await api.createBusfees(newfees);
+        // dispatch({ type : CREATE, payload: data});
     } catch (error) {
         console.log(error);
     }
@@ -24,10 +24,10 @@ export const postBusfees = (newfees) => async (dispatch) => {
 export const updateBusfees = (id, updatefees) => async (dispatch) => {
     try {
 
-        const { data } =await api.updateFees(id, updatefees);
+        // const { data } =await api.updateFees(id, updatefees);
 
 
-        dispatch({ type : UPDATE, payload: data});
+        // dispatch({ type : UPDATE, payload: data});
     } catch (error) {
         console.log(error);
     }
@@ -35,9 +35,9 @@ export const updateBusfees = (id, updatefees) => async (dispatch) => {
 
 export const deleteBusfees = ( id ) => async (dispatch) => {
     try {
-        await api.deleteFees(id);
+        // await api.deleteFees(id);
 
-        dispatch({ type : DELETE , payload: id});
+        // dispatch({ type : DELETE , payload: id});
     } catch (error) {
         console.log(error);
     }

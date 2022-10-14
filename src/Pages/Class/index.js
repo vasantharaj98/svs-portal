@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const columns = [
     { id: 'class', label: 'Class', minWidth: 170 },
     { id: 'section',align: 'center', label: 'Section', minWidth: 100 },
-    { id: 'action', label: 'Action', minWidth: 170, align: 'center'}
+    { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
   ];
 const rows=[
   {

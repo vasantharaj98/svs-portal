@@ -1,57 +1,49 @@
-import React from 'react';
-import { styled} from '@mui/material/styles';
-import Schooltable from '../../Components/Table/index';
+import React, {useEffect, useState} from 'react';
+import {styled} from '@mui/material/styles';
+import Table from '../../Components/Table/Table';
 import Adddata from './Addstudent';
-import { Box, Typography } from '@mui/material';
+import Viewstudent from './viewStudent';
+import { Box, Typography, Autocomplete, TextField } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'name', label: 'StudentName', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
-    },
+    { id: 'studentId', label: 'Student Id', minWidth: 170 },
+    { id: 'studentName',align: 'center', label: 'Student Name', minWidth: 100 },
+    { id: 'mobileNo',align: 'center', label: 'Mobile Number', minWidth: 100 },
+    { id: 'aadhaarNo',align: 'center', label: 'Aadhaar Number', minWidth: 100 },
+    { id: 'class',align: 'center', label: 'Class', minWidth: 100 },
+    { id: 'section',align: 'center', label: 'Section', minWidth: 100 },
+    { id: 'busRoute',align: 'center', label: 'Bus Route', minWidth: 100 },
+    { id: 'busNo',align: 'center', label: 'Bus No', minWidth: 100 },
+    { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{view: true, edit: true, delete: true}]}
   ];
+const rows=[
+  {
+  "_id": "631c362affaff2b9aa378436",
+  "studentId": "1234",
+  "studentName": "Vasanth",
+  "mobileNo": "8765466546",
+  "aadhaarNo": "8765466546",
+  "class": "LKG",
+  "section": "A,B",
+  "busRoute": "Coimbatore",
+  "busNo": "TN76N7655",
+  },
+  {
+    "_id": "631c362affaff2b9aa378436",
+    "studentId": "1234",
+    "studentName": "Vasanth",
+    "mobileNo": "8765466546",
+    "aadhaarNo": "8765466546",
+    "class": "LKG",
+    "section": "A,B",
+    "busRoute": "",
+    "busNo": "",
+    },
+]
+  const top100Films = ['2019', '2020'];
   
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
-  
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
 
   const Tablebox = styled('div')(({ theme }) => ({
     marginTop : 80,
@@ -59,19 +51,45 @@ const columns = [
     padding: theme.spacing(0, 3),
   }));
 
-const Student = () => {
+const Bus = ({currentId, setCurrentid}) => {
+
+  const busfees = useSelector((state)=> state.busfees);
+
+  const[view, setView]=useState(false);
+
+  console.log(busfees);
+  
+  useEffect( () => {
+    if(busfees.successMessage){
+      toast(busfees.Message);
+    }
+  },[busfees]);
+
   return (
     <>
     <Tablebox>
-    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600' }} >Student</Typography>
-        <Adddata button="Add Student"></Adddata>
+      {view ?
+      <Viewstudent setView={setView}></Viewstudent>
+      :
+      <div>
+      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600', marginBottom:2 }} >Students</Typography>
+        <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={top100Films}
+        sx={{ width: 300, marginBottom:2 }}
+        renderInput={(params) => <TextField {...params} label="Select Batch" />}
+        />
+        <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Student"></Adddata>
     </Box>
-    <Schooltable columns={columns} rows={rows} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={rows} setView={setView}/>
+      </div>
+}
     </Tablebox>
     </>
 
   )
 }
 
-export default Student;
+export default Bus;

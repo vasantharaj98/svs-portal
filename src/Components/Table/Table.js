@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { deleteBusfees, loading, toast } from '../../actions/busfees';
@@ -30,7 +31,7 @@ import { deleteBusfees, loading, toast } from '../../actions/busfees';
       border: 0,
   }));
 
-const Schooltable = ({setCurrentid, columns, rows}) => {
+const Schooltable = ({setCurrentid, columns, rows, setView}) => {
   
   const dispatch = useDispatch();
 
@@ -74,12 +75,19 @@ return (
               {columns.map((column)=>{
                 return(
                   <TableCell component="th" align={column.align} scope="row">
-                  {row[column.id]}
+                  {!row[column.id] == "" ? row[column.id] : "-"}
                   {column.id === "action"
                   && 
                   <>
-                    <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>
-                    <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>
+                  {column?.actiontype.map((a)=>{
+                    return(
+                    <>
+                    {a.view && <Button onClick={ ()=> setView(true)} sx={{background: '#3d07dc', marginRight: 2}}><VisibilityIcon sx={{color: '#fff'}}></VisibilityIcon></Button>}
+                    {a.edit && <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>}
+                    {a.delete && <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>}
+                    </>
+                    )
+                  })}
                   </>
                   }
                 </TableCell>
@@ -90,6 +98,7 @@ return (
         </TableBody>
         </Table>
       </TableCusContainer>
+      { rows.length >= 10 &&
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
@@ -99,6 +108,7 @@ return (
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+    }
     </Paper>
     </>
   )

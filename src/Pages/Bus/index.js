@@ -42,6 +42,10 @@ const columns = [
       label: 'Action',
       minWidth: 170,
       align: 'center',
+      actiontype:[{
+        edit: true, 
+        delete: true
+      }]
     }
   ];
 

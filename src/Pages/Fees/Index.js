@@ -11,7 +11,7 @@ const columns = [
       { id: 'tutionFees',align: 'center', label: 'Tution Fees', minWidth: 100 },
       { id: 'bookFees',align: 'center', label: 'Book Fees', minWidth: 100 },
       { id: 'totalFees',align: 'center', label: 'Total', minWidth: 100 },
-      { id: 'action', label: 'Action', minWidth: 170, align: 'center'}
+      { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
 ];
 
 const rows=[

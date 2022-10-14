@@ -15,12 +15,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
 import ListItemText from '@mui/material/ListItemText';
+import { Button } from '@mui/material';
 import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet, Discount,Settings, ArrowDropUp, ArrowDropDown  } from '@mui/icons-material';
 import { theme } from '../Themesetup';
 import { Link } from 'react-router-dom';
 import './style.css';
 import  Loader  from '../../Components/Loader/loader.js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { signOut } from '../../actions/auth';
 
 
 const drawerWidth = 240;
@@ -132,15 +134,42 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function MiniDrawer({auth, setAuth}) {
 
   const showLoader = useSelector((state)=> state.busfees.showLoading);
+
+  const dispatch = useDispatch();
 
   console.log(showLoader);
 
   const [open, setOpen] = useState(false);
   const [selectid, setSelectid] = useState('');
   const [submenu, setSubmenu] = useState(false);
+  const [loader, setLoader] = useState(false);
+
+  const handleLogout=()=>{
+//     fetch('http://3.110.146.2/logout', {
+//        method: 'PATCH', // or 'PUT'
+//       //  mode: 'no-cors',
+//       headers: {
+//           'Content-Type': 'application/json',
+//             },
+// })
+//   .then((response) => response.json())
+//   .then((data) => {
+//     console.log('Success:', data);
+//   })
+//   .catch((error) => {
+//     console.error('Error:', error);
+//   });
+      // setLoader(true);
+      dispatch(signOut());
+      // localStorage.removeItem("login");
+      // setAuth(null);
+      // if(setAuth(null)){
+      //   setLoader(false);
+      // }
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -178,13 +207,13 @@ export default function MiniDrawer() {
 
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      { showLoader && <Loader></Loader> }
+      { showLoader || loader && <Loader></Loader> }
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            
             edge="start"
             sx={{
               marginRight: 5,
@@ -193,12 +222,15 @@ export default function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{width:'100%'}}>
            SVS School
           </Typography>
+          <div style={{width:'100%',textAlign: 'end'}}>
+          <Button variant="outlined" sx={{color:'#fff', borderColor:'#fff'}} onClick={handleLogout}>Logout</Button>
+          </div>
         </Toolbar>
       </AppBar>
-      <Drawer  variant="permanent" open={open}  
+      <Drawer onMouseOver={handleDrawerOpen} onMouseLeave={handleDrawerClose}  variant="permanent" open={open}  
       sx={{
         '& .MuiDrawer-paper': {
           background : '#000',
@@ -209,7 +241,7 @@ export default function MiniDrawer() {
       }}
       > 
         <DrawerHeader sx={{justifyContent : 'flex-start'}}>
-          <IconButton onClick={handleDrawerClose} sx={{color : '#fff'}}>
+          <IconButton sx={{color : '#fff'}}>
             {theme.direction === 'rtl' ? <CloseIcon /> : <CloseIcon />}
           </IconButton>
         </DrawerHeader>
