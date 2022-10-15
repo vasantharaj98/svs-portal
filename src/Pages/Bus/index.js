@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {styled} from '@mui/material/styles';
 import Table from '../../Components/Table/Table';
 import Adddata from './Addbus';
@@ -49,7 +49,7 @@ const columns = [
     }
   ];
 
-  const top100Films = ['2019', '2020'];
+  const top100Films = ['2021', '2022'];
   
 
   const Tablebox = styled('div')(({ theme }) => ({
@@ -63,6 +63,8 @@ const Bus = ({currentId, setCurrentid}) => {
   const busfees = useSelector((state)=> state.busfees);
 
   console.log("busfeesbusfees", busfees);
+
+  const [year, setYear] = useState(null);
   
   useEffect( () => {
     if(busfees.successMessage){
@@ -80,9 +82,10 @@ const Bus = ({currentId, setCurrentid}) => {
         id="combo-box-demo"
         options={top100Films}
         sx={{ width: 300 }}
+        onChange={(event, value) => setYear(value)}
         renderInput={(params) => <TextField {...params} label="Select Year" />}
         />
-        <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
+        <Adddata currentId={currentId} year={year} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
     <Table setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
     </Tablebox>

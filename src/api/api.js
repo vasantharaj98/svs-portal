@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-// const url = 'http://localhost:5000/busfees';
+export const url = 'http://3.6.205.152';
 
-const API = axios.create({baseURL : "http://3.110.146.2"});
+const API = axios.create({baseURL : url});
 
 API.interceptors.request.use((req)=>{
     if(localStorage.getItem('login')){
-        console.log()
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('login')).data.jwt}`;
     }
 
@@ -14,11 +13,11 @@ API.interceptors.request.use((req)=>{
 });
 
 export const signin = (data) => API.post('/login', data);
-export const signout = () => API.put('/logout');
+export const signout = () => API.put('/logoutUser');
 
-// const url = 'https://svs-school.herokuapp.com/busfees';
+// Busfees
 
 // export const fetchBusfees = () => axios.get(url);
-// export const createBusfees = (newfees) => axios.post(url, newfees);
+export const createBusfees = (newfees) => API.post('/busFees/addBusFees', newfees);
 // export const updateFees = (id, updatefees) => axios.patch(`${url}/${id}`, updatefees);
 // export const deleteFees = (id) => axios.delete(`${url}/${id}`);

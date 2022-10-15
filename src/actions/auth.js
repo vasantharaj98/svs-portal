@@ -17,12 +17,10 @@ export const signOut = () => async(dispatch) => {
 
     try {
         await api.signout();
-        console.log("vasanth")
 
         dispatch({ type : LOGOUT});
 
     } catch (error) {
         console.log(error);
-        console.log("vasantherror")
     }
 }

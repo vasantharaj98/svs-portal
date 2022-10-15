@@ -14,8 +14,8 @@ export const getBusfees = () => async (dispatch) => {
 
 export const postBusfees = (newfees) => async (dispatch) => {
     try {
-        // const {data } =await api.createBusfees(newfees);
-        // dispatch({ type : CREATE, payload: data});
+        const {data } =await api.createBusfees(newfees);
+        dispatch({ type : CREATE, payload: data});
     } catch (error) {
         console.log(error);
     }

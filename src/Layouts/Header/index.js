@@ -134,7 +134,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer({auth, setAuth}) {
+export default function MiniDrawer({ setAuth}) {
 
   const showLoader = useSelector((state)=> state.busfees.showLoading);
 
@@ -148,27 +148,13 @@ export default function MiniDrawer({auth, setAuth}) {
   const [loader, setLoader] = useState(false);
 
   const handleLogout=()=>{
-//     fetch('http://3.110.146.2/logout', {
-//        method: 'PATCH', // or 'PUT'
-//       //  mode: 'no-cors',
-//       headers: {
-//           'Content-Type': 'application/json',
-//             },
-// })
-//   .then((response) => response.json())
-//   .then((data) => {
-//     console.log('Success:', data);
-//   })
-//   .catch((error) => {
-//     console.error('Error:', error);
-//   });
-      // setLoader(true);
+
+      setLoader(true);
       dispatch(signOut());
-      // localStorage.removeItem("login");
-      // setAuth(null);
-      // if(setAuth(null)){
-      //   setLoader(false);
-      // }
+      if(dispatch(signOut())){
+        setAuth(null);
+        setLoader(false);
+      }
   }
 
   const handleDrawerOpen = () => {

@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../../actions/auth';
 import axios from 'axios';
 import AuthContext from '../../context/AuthProvider';
-import Loader from '../../Components/Loader/loader'
+import Loader from '../../Components/Loader/loader';
+import {url} from '../../api/api'
 
 const Login = () => {
 
@@ -37,9 +38,9 @@ const Login = () => {
         e.preventDefault();
         setLoader(true);
         dispatch(signIn(value));
-        axios.post('http://3.110.146.2/login', value).then((res) => 
+        axios.post(`${url}/login`, value).then((res) => 
         {
-        localStorage.setItem("login",JSON.stringify(res.data));
+        localStorage.setItem("login",JSON.stringify(res?.data));
         setAuth(res.data);
         if(auth){
           setLoader(false);
@@ -49,7 +50,7 @@ const Login = () => {
         navigate(from, {replace : true});
         }
         )
-        axios.post('http://3.110.146.2/login', value).catch((e)=>{
+        axios.post(`${url}/login`, value).catch((e)=>{
           if(e){
             setLoader(false);
             setStatus(true);
