@@ -7,23 +7,17 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'class', label: 'Class', minWidth: 170 },
-    { id: 'section',align: 'center', label: 'Section', minWidth: 100 },
+    { id: 'className', label: 'Class', minWidth: 170 },
+    { id: 'sectionName',align: 'center', label: 'Section', minWidth: 170 },
     { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
   ];
 const rows=[
   {
   "_id": "631c362affaff2b9aa378436",
-  "class": "UKG",
-  "section": "A,B",
-  },
-  {
-    "_id": "631c362affaff2b9aa378436",
-    "class": "1ST",
-    "section": "B1,G1",
-    },
+  "className": "UKG",
+  "sectionName": "A,B",
+  }
 ]
-  const top100Films = ['2019', '2020'];
   
 
   const Tablebox = styled('div')(({ theme }) => ({
@@ -32,33 +26,27 @@ const rows=[
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = ({currentId, setCurrentid}) => {
+const Bus = ({currentId, setCurrentid, vchange, setVchange}) => {
 
-  const busfees = useSelector((state)=> state.busfees);
+  const classes = useSelector((state)=> state.classs);
 
-  console.log(busfees);
+  console.log("classes", classes);
   
   useEffect( () => {
-    if(busfees.successMessage){
-      toast(busfees.Message);
+    if(classes.successMessage){
+      toast(classes.Message,
+        {position: toast.POSITION.BOTTOM_RIGHT})
     }
-  },[busfees]);
+  },[classes]);
 
   return (
     <>
     <Tablebox>
-    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600', marginBottom:2 }} >Class</Typography>
-        <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={top100Films}
-        sx={{ width: 300, marginBottom:2 }}
-        renderInput={(params) => <TextField {...params} label="Select Year" />}
-        />
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600'}} >Class</Typography>
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Class"></Adddata>
     </Box>
-    <Table setCurrentid={setCurrentid} columns={columns} rows={rows} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={ classes?.data} />
     </Tablebox>
     </>
 

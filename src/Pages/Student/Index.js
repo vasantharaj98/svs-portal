@@ -2,47 +2,22 @@ import React, {useEffect, useState} from 'react';
 import {styled} from '@mui/material/styles';
 import Table from '../../Components/Table/Table';
 import Adddata from './Addstudent';
-import Viewstudent from './viewStudent';
+import Viewstudent from './ViewStudent';
 import { Box, Typography, Autocomplete, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'studentId', label: 'Student Id', minWidth: 170 },
-    { id: 'studentName',align: 'center', label: 'Student Name', minWidth: 100 },
-    { id: 'mobileNo',align: 'center', label: 'Mobile Number', minWidth: 100 },
-    { id: 'aadhaarNo',align: 'center', label: 'Aadhaar Number', minWidth: 100 },
-    { id: 'class',align: 'center', label: 'Class', minWidth: 100 },
-    { id: 'section',align: 'center', label: 'Section', minWidth: 100 },
-    { id: 'busRoute',align: 'center', label: 'Bus Route', minWidth: 100 },
-    { id: 'busNo',align: 'center', label: 'Bus No', minWidth: 100 },
+    { id: 'studentId', label: 'Student Id', minWidth: 100 },
+    { id: 'name',align: 'center', label: 'Student Name', minWidth: 100 },
+    { id: 'mobileNumber',align: 'center', label: 'Mobile Number', minWidth: 100 },
+    { id: 'adharNumber',align: 'center', label: 'Aadhaar Number', minWidth: 100 },
+    { id: 'email',align: 'center', label: 'Email', minWidth: 100 },
+    { id: 'dob',align: 'center', label: 'DOB', minWidth: 100 },
+    { id: 'className',align: 'center', label: 'Class Name', minWidth: 100 },
+    { id: 'sectionName',align: 'center', label: 'Section Name', minWidth: 100 },
     { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{view: true, edit: true, delete: true}]}
   ];
-const rows=[
-  {
-  "_id": "631c362affaff2b9aa378436",
-  "studentId": "1234",
-  "studentName": "Vasanth",
-  "mobileNo": "8765466546",
-  "aadhaarNo": "8765466546",
-  "class": "LKG",
-  "section": "A,B",
-  "busRoute": "Coimbatore",
-  "busNo": "TN76N7655",
-  },
-  {
-    "_id": "631c362affaff2b9aa378436",
-    "studentId": "1234",
-    "studentName": "Vasanth",
-    "mobileNo": "8765466546",
-    "aadhaarNo": "8765466546",
-    "class": "LKG",
-    "section": "A,B",
-    "busRoute": "",
-    "busNo": "",
-    },
-]
-  const top100Films = ['2019', '2020'];
   
 
   const Tablebox = styled('div')(({ theme }) => ({
@@ -51,39 +26,53 @@ const rows=[
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = ({currentId, setCurrentid}) => {
+const Bus = ({year, setYear, vchange, setVchange, currentId, setCurrentid}) => {
 
-  const busfees = useSelector((state)=> state.busfees);
+  const student = useSelector((state)=> state.student);
 
   const[view, setView]=useState(false);
 
-  console.log(busfees);
+  const studentView = student.data.map((v)=>{
+      return {...v, dob:`${v.dob[2]}-${v.dob[1]}-${v.dob[0]}`};
+  });
+
+  const batchYear = useSelector((state)=> state.year);
+
+  const top100Films = batchYear?.data.map((ye)=>{
+    return ye.batchYear;
+ });
   
   useEffect( () => {
-    if(busfees.successMessage){
-      toast(busfees.Message);
+    if(student.successMessage){
+      toast(student.Message,
+        {position: toast.POSITION.BOTTOM_RIGHT});
     }
-  },[busfees]);
+  },[student]);
 
   return (
     <>
     <Tablebox>
       {view ?
-      <Viewstudent setView={setView}></Viewstudent>
+      <Viewstudent setView={setView} setCurrentid={setCurrentid} currentId={currentId} year={year}></Viewstudent>
       :
       <div>
-      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600', marginBottom:2 }} >Students</Typography>
+      <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600'}} >Students</Typography>
         <Autocomplete
         disablePortal
         id="combo-box-demo"
         options={top100Films}
-        sx={{ width: 300, marginBottom:2 }}
-        renderInput={(params) => <TextField {...params} label="Select Batch" />}
+        sx={{ width: 300 }}
+        value={top100Films ? year : null}
+        onChange={(event, value) => {
+          setYear(value) ;
+          setVchange(!vchange);
+        }}
+        renderInput={(params) => <TextField {...params} label="Select Year" />}
         />
-        <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Student"></Adddata>
+        <Adddata year={year} button="Add Student"></Adddata>
     </Box>
-    <Table setCurrentid={setCurrentid} columns={columns} rows={rows} setView={setView}/>
+    <Table setCurrentid={setCurrentid} columns={columns} rows={studentView} setView={setView}/>
       </div>
 }
     </Tablebox>

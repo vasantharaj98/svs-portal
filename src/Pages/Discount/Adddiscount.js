@@ -10,7 +10,9 @@ import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { postDiscount, updateBusfees, loading, toast } from '../../actions/discount';
 
 
 
@@ -75,18 +77,20 @@ const Adddata = ({currentId, setCurrentid, button}) => {
 
   const formik = useFormik({
     initialValues: {
-      disCount: '',
-      discountPer: '',
+      discountName: '',
+      busFees: false,
+      tuitionFees: false,
+      bookFees: false,
     },
     validationSchema: Yup.object({
-      disCount: Yup.string()
+      discountName: Yup.string()
         .max(15, 'Must be 15 characters or less')
-        .required('Required'),
-      discountPer: Yup.number()
         .required('Required'),
     }),
     onSubmit: values => {
-      console.log("discount", values.disCount);
+      dispatch(postDiscount(values));
+      dispatch(loading(true));
+      dispatch(toast(false));
       formik.resetForm();
       setOpen(false);
     },
@@ -94,8 +98,8 @@ const Adddata = ({currentId, setCurrentid, button}) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
-      <Button onClick={handleOpen} variant="contained" color='primary'>{button}</Button>
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+      <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>{button}</Button>
       </div> 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -121,8 +125,8 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       <div style={{display:'flex', flexDirection:'column'}}>
         <TextField
         style={{margin:0, marginBottom: 0}}
-          id="disCount"
-          label="Discount Type"
+          name="discountName"
+          label="Discount Name"
           value={formik.values.disCount}
           onChange= {formik.handleChange}
           onBlur={formik.handleBlur}
@@ -130,18 +134,9 @@ const Adddata = ({currentId, setCurrentid, button}) => {
          {formik.touched.disCount && formik.errors.disCount  ? (
          <div style={{color: 'red'}}>{formik.errors.disCount}</div>
        ) : null}
-         <TextField
-        style={{margin:0, marginBottom: 0, marginTop: 15}}
-          type='number'
-          id="discountPer"
-          label="Discount Percentage"
-          value={formik.values.discountPer}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.discountPer && formik.errors.discountPer ? (
-         <div style={{color: 'red'}}>{formik.errors.discountPer}</div>
-       ) : null}
+         <FormControlLabel sx={{marginTop: 2}} control={<Checkbox name="busFees" onChange= {formik.handleChange} />} label="Bus Fees" />
+         <FormControlLabel sx={{marginTop: 2}} control={<Checkbox name="tuitionFees"  onChange= {formik.handleChange}/>} label="Tution Fees" />
+         <FormControlLabel sx={{marginTop: 2}} control={<Checkbox name="bookFees"  onChange= {formik.handleChange}/>} label="Book Fees" />
       </div>
       <div style={{display: 'flex', justifyContent: 'center', alignItems:'center', marginTop: 10}}>
         <Button variant="contained" color='primary' size="large" 

@@ -12,8 +12,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import { deleteBusfees, loading, toast } from '../../actions/busfees';
-
+import { deleteBusfees, toast } from '../../actions/busfees';
+import { viewStudent, loading } from '../../actions/payment';
 
 
   const TableCusContainer = styled(TableContainer)(({ theme }) => ({
@@ -37,6 +37,12 @@ const Schooltable = ({setCurrentid, columns, rows, setView}) => {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleView = (id) =>{
+      dispatch(viewStudent(id, setView));
+      dispatch(loading(true));
+      setCurrentid(id);
+    }
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -50,8 +56,8 @@ const Schooltable = ({setCurrentid, columns, rows, setView}) => {
 
 return (
       <>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableCusContainer>
+      <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom: 2 }}>
+      <TableCusContainer sx={{maxHeight: '100%'}}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -67,30 +73,36 @@ return (
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.map((row) => (
+          {rows.length == 0 && <TableCell component="th" colSpan="0" align="center" scope="row">No data found</TableCell>}
+            {
+          rows?.map((row) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {columns.map((column)=>{
                 return(
+                  <>
                   <TableCell component="th" align={column.align} scope="row">
-                  {!row[column.id] == "" ? row[column.id] : "-"}
-                  {column.id === "action"
-                  && 
+                  {row[column.id] == 1 ? "Yes" :
+                  !row[column.id] == "" ? row[column.id] : 
+                  column.id === "action"
+                  ? 
                   <>
                   {column?.actiontype.map((a)=>{
                     return(
                     <>
-                    {a.view && <Button onClick={ ()=> setView(true)} sx={{background: '#3d07dc', marginRight: 2}}><VisibilityIcon sx={{color: '#fff'}}></VisibilityIcon></Button>}
+                    {a.view && <Button onClick={()=> handleView(row.uniqueId)} sx={{background: '#3d07dc', marginRight: 2}}><VisibilityIcon sx={{color: '#fff'}}></VisibilityIcon></Button>}
                     {a.edit && <Button onClick={ ()=> setCurrentid(row._id)} sx={{background: '#3d07dc', marginRight: 2}}><EditIcon sx={{color: '#fff'}}></EditIcon></Button>}
                     {a.delete && <Button onClick={ () =>{ dispatch(deleteBusfees(row._id)); dispatch(loading(true)); dispatch(toast(false)) }} sx={{background: '#dc0707'}}><DeleteIcon sx={{color: '#fff'}}/></Button>}
                     </>
                     )
                   })}
                   </>
+                  : "-"
                   }
                 </TableCell>
+                </>
                 )
               })}
             </TableRow>
@@ -98,11 +110,11 @@ return (
         </TableBody>
         </Table>
       </TableCusContainer>
-      { rows.length >= 10 &&
+      { rows?.length >= 10 &&
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={rows?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

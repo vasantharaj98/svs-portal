@@ -7,31 +7,31 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'routename', label: 'Route Name', minWidth: 170 },
-    { id: 'busno',align: 'center', label: 'Bus\u00a0No', minWidth: 100 },
+    { id: 'routeName', label: 'Route Name', minWidth: 170 },
+    { id: 'busNumber',align: 'center', label: 'Bus\u00a0No', minWidth: 100 },
     {
-      id: 'twowayfees',
+      id: 'twoWayFees',
       label: 'Two Way Fees',
       minWidth: 170,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
-      id: 'fullfees',
+      id: 'fullFees',
       label: 'Full Fess',
       minWidth: 170,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
-      id: 'specialtripfees',
+      id: 'specialTrip',
       label: 'Special Trip Fees',
       minWidth: 170,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
-      id: 'totalfees',
+      id: 'totalFees',
       label: 'Total Fess',
       minWidth: 170,
       align: 'center',
@@ -48,8 +48,6 @@ const columns = [
       }]
     }
   ];
-
-  const top100Films = ['2021', '2022'];
   
 
   const Tablebox = styled('div')(({ theme }) => ({
@@ -58,36 +56,45 @@ const columns = [
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = ({currentId, setCurrentid}) => {
+const Bus = ({currentId, setCurrentid, year, setYear, vchange, setVchange}) => {
 
   const busfees = useSelector((state)=> state.busfees);
 
-  console.log("busfeesbusfees", busfees);
+  console.log("busfees", busfees);
 
-  const [year, setYear] = useState(null);
+  const batchYear = useSelector((state)=> state.year);
+
+  const top100Films = batchYear?.data.map((ye)=>{
+    return ye.batchYear;
+ });
   
   useEffect( () => {
     if(busfees.successMessage){
-      toast(busfees.Message);
+      toast(busfees.Message,
+        {position: toast.POSITION.BOTTOM_RIGHT})
     }
   },[busfees]);
 
   return (
     <>
     <Tablebox>
-    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
         <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
         <Autocomplete
         disablePortal
         id="combo-box-demo"
         options={top100Films}
         sx={{ width: 300 }}
-        onChange={(event, value) => setYear(value)}
+        value={top100Films ? year : null}
+        onChange={(event, value) => {
+          setYear(value) ;
+          setVchange(!vchange);
+        }}
         renderInput={(params) => <TextField {...params} label="Select Year" />}
         />
         <Adddata currentId={currentId} year={year} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>
-    <Table setCurrentid={setCurrentid} columns={columns} rows={busfees.busfees} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={ busfees.busfees}  />
     </Tablebox>
     </>
 

@@ -9,10 +9,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Radio from '@mui/material/Radio';
+import Checkbox from '@mui/material/Checkbox';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import {GetApp, FileUpload} from '@mui/icons-material';
@@ -20,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import Grid from '@mui/material/Grid';
 import * as Yup from 'yup';
-import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
+import { postStudent, updateBusfees, loading, toast } from '../../actions/student';
 import { flexbox } from '@mui/system';
 
 
@@ -36,64 +39,80 @@ const style = {
   borderRadius: 2,
 };
 
-
-const StudentSchema =  Yup.object().shape({
-  studentId: Yup.string()
-    .required('Required'),
- studentName: Yup.string()
-    .required('Required'),
- mobileNumber: Yup.number()
-    .required('Required'),
-aadhaarNumber: Yup.number()
-    .required('Required'),
-class: Yup.string()
-    .required('Required'), 
-section: Yup.string()
-    .required('Required'),
-busRoute: Yup.string()
-    .required('Required'),
-busNo: Yup.string()
-    .required('Required'),
-});
-
-const studentSchema1 =  Yup.object({
-  studentId: Yup.string()
-    .required('Required'),
- studentName: Yup.string()
-    .required('Required'),
- mobileNumber: Yup.number()
-    .required('Required'),
-aadhaarNumber: Yup.number()
-    .required('Required'),
-class: Yup.string()
-    .required('Required'), 
-section: Yup.string()
-    .required('Required'),
-});
-
-const Adddata = ({currentId, setCurrentid, button}) => {
+const Adddata = ({currentId, setCurrentid, button, year}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
   setOpen(false);
   setCurrentid(null);
+  setRoute({routeName: ""});
+  setDiscount({disCount: ""});
+  setDate({dob: null});
   setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   };
 
 
   const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
 
-  const [value, setValue] = useState('yes');
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
 
   const dispatch = useDispatch();
 
+  const className = useSelector((state)=> state.classs);
+  const RouteName = useSelector((state)=> state.busfees);
+  const DisCount = useSelector((state)=> state.discount);
+
   const updatePost = useSelector ((state) => currentId ? state.busfees.busfees.find((p) => p._id === currentId ) : null );
 
+  const [route, setRoute] = useState({routeName: ''});
+
+  const handleChange = (e) =>{
+      setRoute({routeName: e.target.value})
+  }
+
+  const [discount, setDiscount] = useState({disCount: ''});
+
+  const handleChange1 = (e) =>{
+      setDiscount({disCount: e.target.value})
+  }
+
+  const [date, setDate] = useState({dob: null});
+
+  const handleDate = (newValue) =>{
+    setDate({dob: newValue})
+    if(newValue){
+      formik.setFieldValue("dob", newValue.format('YYYY-MM-DD'));
+      formik.setFieldValue("year", year);
+    }
+  }
+
+  const [key, setKey] = useState(null);
+
+  const handleClick = (event, key) => {
+    setKey(key);
+    }
+
+    const [key1, setKey1] = useState(null);
+
+    const handleClick1 = (event, key) => {
+      setKey1(key);
+      }
+
+      const [key2, setKey2] = useState(null);
+
+      const handleClick2 = (event, key) => {
+        setKey2(key);
+        }
+
+      const busuidd = key1!==null ? RouteName.busfees[key1].uniqueId : null;
+      const discountuidd = key2!==null ? DisCount.data[key2].uniqueId : null;
+
+      useEffect(()=>{
+          formik.setFieldValue('busUuid',  busuidd);
+      },[route])
+
+      useEffect(()=>{
+        formik.setFieldValue('discountUuid',  discountuidd);
+    },[discount])
 
   useEffect(()=>{
     if(currentId){
@@ -130,50 +149,65 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   const formik = useFormik({
     initialValues: {
       studentId: '',
-      studentName: '',
+      name: '',
+      year:'',
       mobileNumber:'',
-      aadhaarNumber:'',
-      class: '',
-      section:'',
-      address:'',
-      bus:'yes',
-      busRoute:'',
-      busNo:'',
+      adharNumber:'',
+      email:'',
+      dob:null,
+      className: '',
+      sectionName:'',
+      busService: true,
+      busUuid:'',
+      busNumber:'',
+      discountUuid:'',
     },
     validationSchema: Yup.object().shape({
       studentId: Yup.string()
         .required('Required'),
-     studentName: Yup.string()
+     name: Yup.string()
         .required('Required'),
      mobileNumber: Yup.number()
         .required('Required'),
-    aadhaarNumber: Yup.number()
+    adharNumber: Yup.number()
         .required('Required'),
-    class: Yup.string()
+    email: Yup.string()
         .required('Required'), 
-    section: Yup.string()
+    dob: Yup.string()
         .required('Required'),
-    address: Yup.string()
+    className: Yup.string()
         .required('Required'),
-    busRoute: Yup.string()
+    sectionName: Yup.string()
         .required('Required'),
-    busNo: Yup.string()
+    busNumber: Yup.string()
         .required('Required'),
     }),
     onSubmit: values => {
-      console.log("student", values);
+      dispatch(postStudent(values));
       formik.resetForm();
-      setOpen(false);
+      handleClose();
+      // setOpen(false);
     },
   });
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
-      <Button variant="outlined" color='primary'>{<FileUpload/>} Export</Button>
-      <Button variant="outlined" color='primary' sx={{mx: 1}}>{<GetApp/>}Import</Button>
-      <Button onClick={handleOpen} variant="contained" color='primary'>{button}</Button>
-      </div> 
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button variant="outlined" color="primary">
+          {<FileUpload />} Export
+        </Button>
+        <Button variant="outlined" color="primary" sx={{ mx: 2 }}>
+          {<GetApp />}Import
+        </Button>
+        <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>
+          {button}
+        </Button>
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -187,219 +221,302 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-          <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 2, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-      onSubmit={formik.handleSubmit}
-    >
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
-        <TextField
-          sx={{ '&.MuiTextField-root':{
-            margin: "15px",
-            marginBottom: 0,
-            width: '100%'
-          }
-        }}
-          id="studentId"
-          label="Student Id"
-          value={formik.values.studentId}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.studentId && formik.errors.studentId  ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.studentId}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <TextField
-           sx={{ '&.MuiTextField-root':{
-            margin: "15px",
-            marginBottom: 0,
-            width: '100%'
-          }
-        }}
-          id="studentName"
-          label="Student Name"
-          value={formik.values.studentName}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.studentName && formik.errors.studentName  ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.studentName}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <TextField
-          sx={{ '&.MuiTextField-root':{
-            margin: "15px",
-            marginBottom: 0,
-            width: '100%'
-          }
-        }}
-          type='number'
-          id="mobileNumber"
-          label="Mobile Number"
-          value={formik.values.mobileNumber}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.mobileNumber && formik.errors.mobileNumber  ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.mobileNumber}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <TextField
-          sx={{ '&.MuiTextField-root':{
-            margin: "15px",
-            marginBottom: 0,
-            width: '100%'
-          }
-        }}
-          type='number'
-          id="aadhaarNumber"
-          label="Aadhaar Number"
-          value={formik.values.aadhaarNumber}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.aadhaarNumber && formik.errors.aadhaarNumber  ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.aadhaarNumber}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <FormControl sx={{  margin: "15px",
-            marginBottom: 0, width: '100%' }}>
-          <InputLabel id="demo-simple-select-label">Class</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="class"
-            label="Class"
-            name='class'
-            value={formik.values.class}
-            onChange={formik.handleChange}
-          >
-            <MenuItem   value='UKG'>UKG</MenuItem>
-            <MenuItem   value='LKG'>LKG</MenuItem>
-            <MenuItem   value='1ST'>1ST</MenuItem>
-          </Select>
-      </FormControl>
-      {formik.touched.class && formik.errors.class  ? (
-         <div style={{marginLeft: "15px",color: 'red'}}>{formik.errors.class}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <FormControl sx={{  margin: "15px",
-            marginBottom: 0, width: '100%'}}>
-          <InputLabel id="demo-simple-select-label">Section</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="section"
-            name="section"
-            label="Section"
-            value={formik.values.section}
-            onChange={formik.handleChange}
-          >
-            <MenuItem value='A'>A</MenuItem>
-            <MenuItem value='B'>B</MenuItem>
-            <MenuItem value='C'>C</MenuItem>
-          </Select>
-      </FormControl>
-      {formik.touched.section && formik.errors.section ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.section}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12}>
-        <TextField
-          sx={{ '&.MuiTextField-root':{
-            margin: "15px",
-            marginBottom: 0,
-            width: '100%'
-          }
-        }}
-          id="address"
-          name="address"
-          label="Address"
-          value={formik.values.address}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.address && formik.errors.address  ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.address}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <FormControl sx={{  margin: "15px",
-            marginBottom: 0, width: '100%'}}>
-      <FormLabel id="demo-row-radio-buttons-group-label">Bus</FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="bus"
-        value={formik.values.bus}
-        onChange={formik.handleChange}
-      >
-        <FormControlLabel name="bus" value='yes' control={<Radio />} label="yes" />
-        <FormControlLabel name="bus" value='no' control={<Radio />} label="No" />
-      </RadioGroup>
-    </FormControl>
-        </Grid>
-        {formik.values.bus == "yes" 
-    ?<><Grid item xs={12} md={4}>
-          <FormControl sx={{  margin: "15px",
-            marginBottom: 0, width: '100%'}}>
-          <InputLabel id="demo-simple-select-label">Bus Route</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="busRoute"
-            label="Bus Route"
-            name='busRoute'
-            value={formik.values.busRoute}
-            onChange={formik.handleChange}
-          >
-            <MenuItem value='Tambaram'>Tambaram</MenuItem>
-            <MenuItem value='T.Nagar'>T.Nagar</MenuItem>
-            <MenuItem value='Mambalam'>Mambalam</MenuItem>
-          </Select>
-      </FormControl>
-      {formik.touched.busRoute && formik.errors.busRoute ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.busRoute}</div>
-       ) : null}
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <FormControl sx={{  margin: "15px",
-            marginBottom: 0, width: '100%'}}>
-          <InputLabel id="demo-simple-select-label">Bus No</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="busNo"
-            label="Bus No"
-            name='busNo'
-            value={formik.values.busNo}
-            onChange={formik.handleChange}
-          >
-            <MenuItem value='TN48N6556'>TN48N6556</MenuItem>
-            <MenuItem value='TN87V5665'>TN87V5665</MenuItem>
-            <MenuItem value='TN87G6654'>TN87G6654</MenuItem>
-          </Select>
-      </FormControl>
-      {formik.touched.busNo && formik.errors.busNo ? (
-         <div style={{marginLeft: "15px", color: 'red'}}>{formik.errors.busNo}</div>
-       ) : null}
-        </Grid>
-    </> : null
-      }
-      </Grid>
-      <div style={{display: 'flex', justifyContent: 'center', marginRight: 40, marginTop: 15}}>
-        <Button variant="contained" color='primary' size="large" 
-        type='submit'
-        >Submit</Button>
-      </div> 
-          </Box>
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 2, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+              onSubmit={formik.handleSubmit}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    sx={{
+                      "&.MuiTextField-root": {
+                        margin: "15px",
+                        marginBottom: 0,
+                        width: "100%",
+                      },
+                    }}
+                    name="studentId"
+                    label="Student Id"
+                    value={formik.values.studentId}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.studentId && formik.errors.studentId ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.studentId}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    sx={{
+                      "&.MuiTextField-root": {
+                        margin: "15px",
+                        marginBottom: 0,
+                        width: "100%",
+                      },
+                    }}
+                    name="name"
+                    label="Student Name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.name && formik.errors.name ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.name}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    sx={{
+                      "&.MuiTextField-root": {
+                        margin: "15px",
+                        marginBottom: 0,
+                        width: "100%",
+                      },
+                    }}
+                    type="number"
+                    name="mobileNumber"
+                    label="Mobile Number"
+                    value={formik.values.mobileNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.mobileNumber && formik.errors.mobileNumber ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.mobileNumber}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    sx={{
+                      "&.MuiTextField-root": {
+                        margin: "15px",
+                        marginBottom: 0,
+                        width: "100%",
+                      },
+                    }}
+                    type="number"
+                    id="adharNumber"
+                    label="Aadhaar Number"
+                    value={formik.values.adharNumber}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.adharNumber && formik.errors.adharNumber ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.adharNumber}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    sx={{
+                      "&.MuiTextField-root": {
+                        margin: "15px",
+                        marginBottom: 0,
+                        width: "100%",
+                      },
+                    }}
+                    type="email"
+                    id="email"
+                    label="Email Id"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.email && formik.errors.email ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.email}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      name="dob"
+                      label="DOB"
+                      inputFormat="DD-MM-YYYY"
+                      value={date.dob}
+                      onChange={(newValue) => {
+                        handleDate(newValue)
+                      }}
+                      renderInput={(params) => <TextField sx={{
+                        "&.MuiTextField-root": {
+                          margin: "15px",
+                          marginBottom: 0,
+                          width: "100%",
+                        },
+                      }} {...params} />}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl
+                    sx={{ margin: "15px", marginBottom: 0, width: "100%" }}
+                  >
+                    <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="class"
+                      label="Class"
+                      name="className"
+                      value={formik.values.className}
+                      onChange={formik.handleChange}
+                    >
+                      {className?.data.map((ye, key)=>{
+                        return <MenuItem key={key} onClick={event => handleClick(event, key)} value={ye.className}>{ye.className}</MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                  {formik.touched.class && formik.errors.class ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.class}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl
+                    sx={{ margin: "15px", marginBottom: 0, width: "100%" }}
+                  >
+                    <InputLabel id="demo-simple-select-label">
+                      Section
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="section"
+                      name="sectionName"
+                      label="Section"
+                      value={formik.values.sectionName}
+                      onChange={formik.handleChange}
+                    >
+                      {key !== null ? 
+                      className.data[key].sectionName.split(',') .map((v)=>{
+                        return <MenuItem value={v}>{v}</MenuItem>
+                      })
+                      : null}
+                    </Select>
+                  </FormControl>
+                  {formik.touched.section && formik.errors.section ? (
+                    <div style={{ marginLeft: "15px", color: "red" }}>
+                      {formik.errors.section}
+                    </div>
+                  ) : null}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <FormControlLabel sx={{ margin: "15px", marginBottom: 0, marginTop: 3, width: "100%" }} control={<Checkbox name="busService" defaultChecked onChange= {formik.handleChange} />} label="Bus Service" />
+                </Grid>
+                {formik.values.busService ? (
+                  <>
+                    <Grid item xs={12} md={4}>
+                      <FormControl
+                        sx={{ margin: "15px", marginBottom: 0, width: "100%" }}
+                      >
+                        <InputLabel id="demo-simple-select-label">
+                          Bus Route
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="busRoute"
+                          label="Bus Route"
+                          name="busRoute"
+                          value={route.routeName}
+                          onChange={handleChange}
+                        >
+                        {RouteName?.busfees.map((ye, key)=>{
+                        return <MenuItem key={key} onClick={event => handleClick1(event, key)} value={ye.routeName}>{ye.routeName}</MenuItem>
+                      })}
+                        </Select>
+                      </FormControl>
+                      {formik.touched.busRoute && formik.errors.busRoute ? (
+                        <div style={{ marginLeft: "15px", color: "red" }}>
+                          {formik.errors.busRoute}
+                        </div>
+                      ) : null}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      <FormControl
+                        sx={{ margin: "15px", marginBottom: 0, width: "100%" }}
+                      >
+                        <InputLabel id="demo-simple-select-label">
+                          Bus No
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="busNo"
+                          label="Bus Number"
+                          name="busNumber"
+                          value={formik.values.busNumber}
+                          onChange={formik.handleChange}
+                        >
+                      {key1 !== null ? 
+                      RouteName.busfees[key1].busNumber.map((v)=>{
+                        return <MenuItem value={v}>{v}</MenuItem>
+                      })
+                      : null}
+                        </Select>
+                      </FormControl>
+                      {formik.touched.busNumber && formik.errors.busNumber ? (
+                        <div style={{ marginLeft: "15px", color: "red" }}>
+                          {formik.errors.busNumber}
+                        </div>
+                      ) : null}
+                    </Grid>
+                  </>
+                ) : null}
+                <Grid item xs={12} md={4}>
+                      <FormControl
+                        sx={{ margin: "15px", marginBottom: 0, width: "100%" }}
+                      >
+                        <InputLabel id="demo-simple-select-label">
+                          Discount
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="discount"
+                          label="Discount"
+                          name="discount"
+                          value={discount.disCount}
+                          onChange={handleChange1}
+                        >
+                        { DisCount?.data.map((ye, key)=>{
+                        return <MenuItem key={key} onClick={event => handleClick2(event, key)} value={ye.discountName}>{ye.discountName}</MenuItem>
+                      })}
+                        </Select>
+                      </FormControl>
+                      {formik.touched.busRoute && formik.errors.busRoute ? (
+                        <div style={{ marginLeft: "15px", color: "red" }}>
+                          {formik.errors.busRoute}
+                        </div>
+                      ) : null}
+                    </Grid>
+              </Grid>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginRight: 40,
+                  marginTop: 15,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </div>
+            </Box>
           </Box>
         </Fade>
       </Modal>

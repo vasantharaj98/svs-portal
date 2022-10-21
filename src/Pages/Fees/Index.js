@@ -8,30 +8,11 @@ import { toast } from 'react-toastify';
 
 const columns = [
   { id: 'className', label: 'Class Name', minWidth: 170 },
-      { id: 'tutionFees',align: 'center', label: 'Tution Fees', minWidth: 100 },
+      { id: 'tuitionFees',align: 'center', label: 'Tution Fees', minWidth: 100 },
       { id: 'bookFees',align: 'center', label: 'Book Fees', minWidth: 100 },
       { id: 'totalFees',align: 'center', label: 'Total', minWidth: 100 },
       { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
 ];
-
-const rows=[
-{
-"_id": "631c362affaff2b9aa378436",
-"className": "Half",
-"tutionFees": "100%",
-"bookFees": "100%",
-"totalFees": "100%",
-},
-{
-  "_id": "631c362affaff2b9aa378436",
-  "className": "Half",
-  "tutionFees": "100%",
-  "bookFees": "100%",
-  "totalFees": "100%",
-  },
-]
-
-const top100Films = ['2019', '2020'];
   
 
 const Tablebox = styled('div')(({ theme }) => ({
@@ -40,33 +21,45 @@ const Tablebox = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 3),
   }));
 
-const Bus = ({currentId, setCurrentid}) => {
+const Bus = ({currentId, setCurrentid, vchange, setVchange, year, setYear}) => {
 
-  const busfees = useSelector((state)=> state.busfees);
+  const Fees = useSelector((state)=> state.fees);
 
-  console.log(busfees);
+  console.log("feesfeees", Fees);
+
+  const batchYear = useSelector((state)=> state.year);
+
+  const top100Films = batchYear?.data.map((ye)=>{
+    return ye.batchYear;
+ });
   
   useEffect( () => {
-    if(busfees.successMessage){
-      toast(busfees.Message);
+    if(Fees.successMessage){
+      toast(Fees.Message,
+        {position: toast.POSITION.BOTTOM_RIGHT});
     }
-  },[busfees]);
+  },[Fees]);
 
   return (
     <>
     <Tablebox>
-    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600', marginBottom:2 }} >Academic Fees</Typography>
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600'}} >Academic Fees</Typography>
         <Autocomplete
         disablePortal
         id="combo-box-demo"
         options={top100Films}
-        sx={{ width: 300, marginBottom:2 }}
+        sx={{ width: 300 }}
+        value={top100Films ? year : null}
+        onChange={(event, value) => {
+          setYear(value) ;
+          setVchange(!vchange);
+        }}
         renderInput={(params) => <TextField {...params} label="Select Year" />}
         />
-        <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Academic Fees"></Adddata>
+        <Adddata currentId={currentId} year={year} setCurrentid={setCurrentid} button="Add Academic Fees"></Adddata>
     </Box>
-    <Table setCurrentid={setCurrentid} columns={columns} rows={rows} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={Fees.fees} />
     </Tablebox>
     </>
 

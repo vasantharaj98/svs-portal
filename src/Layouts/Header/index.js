@@ -14,6 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CloseIcon from '@mui/icons-material/Close';
+import EventIcon from '@mui/icons-material/Event';
 import ListItemText from '@mui/material/ListItemText';
 import { Button } from '@mui/material';
 import { School, DirectionsBus, AssignmentInd, AccountBalanceWallet, Discount,Settings, ArrowDropUp, ArrowDropDown  } from '@mui/icons-material';
@@ -39,6 +40,13 @@ const menus = [
       icon : Settings,
       text : 'Setting',
       submenus : [
+        {
+          id : "academicyear",
+          icon : EventIcon,
+          text : 'Academic Year',
+          path : "/academicyear"
+  
+      },
         {
           id : "busfees",
           icon : DirectionsBus,
@@ -134,13 +142,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer({ setAuth}) {
+export default function MiniDrawer({auth}) {
 
-  const showLoader = useSelector((state)=> state.busfees.showLoading);
+  const showLoader = useSelector((state)=> state.payment.showLoading);
+
+  console.log("showLoader", showLoader);
 
   const dispatch = useDispatch();
-
-  console.log(showLoader);
 
   const [open, setOpen] = useState(false);
   const [selectid, setSelectid] = useState('');
@@ -151,8 +159,7 @@ export default function MiniDrawer({ setAuth}) {
 
       setLoader(true);
       dispatch(signOut());
-      if(dispatch(signOut())){
-        setAuth(null);
+      if(auth == null){
         setLoader(false);
       }
   }
@@ -174,6 +181,8 @@ export default function MiniDrawer({ setAuth}) {
     switch (window.location.pathname) {
       case "/":
        return setSelectid('student');
+       case "/academicyear":
+        return setSelectid('academicyear');
        case "/busfees":
         return setSelectid('busfees');
        case "/class":
@@ -193,7 +202,7 @@ export default function MiniDrawer({ setAuth}) {
 
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      { showLoader || loader && <Loader></Loader> }
+      { showLoader  && <Loader></Loader> || loader && <Loader></Loader> }
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton
@@ -211,7 +220,10 @@ export default function MiniDrawer({ setAuth}) {
           <Typography variant="h6" noWrap component="div" sx={{width:'100%'}}>
            SVS School
           </Typography>
-          <div style={{width:'100%',textAlign: 'end'}}>
+          <div style={{width:'100%',textAlign: 'end', display:'flex', alignItems: 'center'}}>
+          <Typography variant="p" noWrap component="div" sx={{width:'100%', marginRight: 2}}>
+           Welcome, Admin
+          </Typography>
           <Button variant="outlined" sx={{color:'#fff', borderColor:'#fff'}} onClick={handleLogout}>Logout</Button>
           </div>
         </Toolbar>

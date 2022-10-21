@@ -13,6 +13,16 @@ export const signIn = (value) => async(dispatch) => {
     }
 }
 
+export const signLog = () => async(dispatch) => {
+    try {
+
+        dispatch({ type : "LOGGEDIN"});
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const signOut = () => async(dispatch) => {
 
     try {

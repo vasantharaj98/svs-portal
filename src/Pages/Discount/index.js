@@ -7,23 +7,12 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'disType', label: 'Discount Type', minWidth: 170 },
-    { id: 'disPer',align: 'center', label: 'Discount Percentage', minWidth: 100 },
+    { id: 'discountName', label: 'Discount Name', minWidth: 170 },
+    { id: 'busFees',align: 'center', label: 'Bus Fees', minWidth: 100 },
+    { id: 'tuitionFees',align: 'center', label: 'Tution Fees', minWidth: 100 },
+    { id: 'bookFees',align: 'center', label: 'Book Fees', minWidth: 100 },
     { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
   ];
-const rows=[
-  {
-  "_id": "631c362affaff2b9aa378436",
-  "disType": "Half",
-  "disPer": "100%",
-  },
-  {
-    "_id": "631c362affaff2b9aa378436",
-    "disType": "Free",
-    "disPer": "50%",
-    },
-]
-  const top100Films = ['2019', '2020'];
   
 
   const Tablebox = styled('div')(({ theme }) => ({
@@ -34,31 +23,26 @@ const rows=[
 
 const Bus = ({currentId, setCurrentid}) => {
 
-  const busfees = useSelector((state)=> state.busfees);
+  const discount = useSelector((state)=> state.discount);
 
-  console.log(busfees);
-  
+  console.log("discount", discount);
+
+
   useEffect( () => {
-    if(busfees.successMessage){
-      toast(busfees.Message);
+    if(discount.successMessage){
+      toast(discount.Message,
+        {position: toast.POSITION.BOTTOM_RIGHT});
     }
-  },[busfees]);
+  },[discount]);
 
   return (
     <>
     <Tablebox>
-    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600', marginBottom:2 }} >Fees Discount</Typography>
-        <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={top100Films}
-        sx={{ width: 300, marginBottom:2 }}
-        renderInput={(params) => <TextField {...params} label="Select Year" />}
-        />
+    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
+        <Typography variant="h5" sx={{ fontWeight: '600'}} >Fees Discount</Typography>
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Discount"></Adddata>
     </Box>
-    <Table setCurrentid={setCurrentid} columns={columns} rows={rows} />
+    <Table setCurrentid={setCurrentid} columns={columns} rows={discount?.data} />
     </Tablebox>
     </>
 

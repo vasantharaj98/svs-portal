@@ -6,12 +6,14 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import {Autocomplete} from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
+import { postFees, updateBusfees, loading, toast } from '../../actions/fees';
 
 
 
@@ -26,9 +28,9 @@ const style = {
   borderRadius: 2,
 };
 
-const top100Films = ['A', 'B'];
+// const top100Films = ['A', 'B'];
 
-const Adddata = ({currentId, setCurrentid, button}) => {
+const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -42,6 +44,12 @@ const Adddata = ({currentId, setCurrentid, button}) => {
 
 
   const dispatch = useDispatch();
+
+  const className = useSelector((state)=> state.classs);
+
+  const top100Films = className?.data.map((ye)=>{
+    return ye.className;
+ });
 
   const updatePost = useSelector ((state) => currentId ? state.busfees.busfees.find((p) => p._id === currentId ) : null );
 
@@ -71,7 +79,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       }
       else{
 
-        dispatch(postBusfees(postData));
+        // dispatch(postBusfees(postData));
         dispatch(loading(true));
         dispatch(toast(false));
 
@@ -79,23 +87,45 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   }
 
+  const [value, setValue] = useState({className:[]});
+
+  const classValue = value.className.join();
+
+  useEffect(()=>{
+    formik.setFieldValue('className', classValue)
+    formik.setFieldValue('year', year)
+  },[classValue])
+
+  // console.log("valuevalue", classValue);
+
   const formik = useFormik({
     initialValues: {
-      className:[],
-      tutionFees: '',
-      bookFees: '',
-      totalFees:'',
+      className: '',
+      tuitionFees: 0,
+      bookFees: 0,
+      hasTermFees: true,
+      term1: 0,
+      term2: 0,
+      term3: 0,
+      year: ''
     },
     validationSchema: Yup.object({
-      tutionFees: Yup.number()
+      tuitionFees: Yup.number()
         .required('Required'),
      bookFees: Yup.number()
         .required('Required'),
-     totalFees: Yup.number()
+     term1: Yup.number()
+        .required('Required'),
+      term2: Yup.number()
+        .required('Required'),
+      term3: Yup.number()
         .required('Required'),
     }),
     onSubmit: values => {
       console.log("academic fees", values);
+      dispatch(postFees(values));
+      dispatch(loading(true));
+      dispatch(toast(false));
       formik.resetForm();
       setOpen(false);
     },
@@ -103,8 +133,8 @@ const Adddata = ({currentId, setCurrentid, button}) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
-      <Button onClick={handleOpen} variant="contained" color='primary'>{button}</Button>
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+      <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>{button}</Button>
       </div> 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -127,13 +157,14 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       autoComplete="off"
       onSubmit={formik.handleSubmit}
     >
-      <div style={{display: 'flex', flexDirection:'column'}}>
+      <div style={{display: 'flex'}}>
+      <div>
       <Autocomplete
         multiple
         id="className"
         name="className"
         onChange={(event, newValue) => {
-          formik.setFieldValue('className', newValue);
+          setValue({className: newValue});
         }}
         options={top100Films}
         getOptionLabel={(option) => option}
@@ -142,7 +173,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
           <TextField
             {...params}
             sx={{ '&.MuiTextField-root':{
-              margin: 0,
+              
             },
           }}
             label="Select Class Name"
@@ -151,29 +182,29 @@ const Adddata = ({currentId, setCurrentid, button}) => {
           />
         )}
       />
+      </div>
+      <div>
         <TextField
         sx={{ '&.MuiTextField-root':{
-          margin: 0,
-          marginTop: '15px'
         },
       }}
           type='number'
-          id="tutionFees"
+          name="tuitionFees"
           label="Tuition Fees"
-          value={formik.values.tutionFees}
+          value={formik.values.tuitionFees}
           onChange= {formik.handleChange}
           onBlur={formik.handleBlur}
         />
-         {formik.touched.tutionFees && formik.errors.tutionFees  ? (
-         <div style={{color: 'red'}}>{formik.errors.tutionFees}</div>
+         {formik.touched.tuitionFees && formik.errors.tuitionFees  ? (
+         <div style={{color: 'red'}}>{formik.errors.tuitionFees}</div>
        ) : null}
+       </div>
+       <div>
         <TextField
          sx={{ '&.MuiTextField-root':{
-          margin: 0,
-          marginTop: '15px'
         },
       }}
-          id="bookFees"
+          name="bookFees"
           label="Book Fees"
           type="number"
           value={formik.values.bookFees}
@@ -183,22 +214,58 @@ const Adddata = ({currentId, setCurrentid, button}) => {
          {formik.touched.bookFees && formik.errors.bookFees  ? (
          <div style={{color: 'red'}}>{formik.errors.bookFees}</div>
        ) : null}
+       </div>
+       </div>
+        <FormControlLabel sx={{ marginLeft: 1}} control={<Checkbox name="hasTermFees" defaultChecked onChange= {formik.handleChange} />} label="Term Fees" />
+
+        <div>
+        { formik.values.hasTermFees ? 
+        <>
         <TextField
-         sx={{ '&.MuiTextField-root':{
-          margin: 0,
-          marginTop: '15px'
-        },
-      }}
-          id="totalFees"
-          label="Total Fees"
-          type="number"
-        value={formik.values.totalFees}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-         {formik.touched.totalFees && formik.errors.totalFees  ? (
-         <div style={{color: 'red'}}>{formik.errors.totalFees}</div>
-       ) : null}
+        sx={{ '&.MuiTextField-root':{
+       },
+     }}
+         name="term1"
+         label="Term 1"
+         type="number"
+       value={formik.values.term1}
+         onChange= {formik.handleChange}
+         onBlur={formik.handleBlur}
+       />
+        {formik.touched.term1 && formik.errors.term1  ? (
+        <div style={{color: 'red'}}>{formik.errors.term1}</div>
+      ) : null}
+      <TextField
+        sx={{ '&.MuiTextField-root':{
+       },
+     }}
+         name="term2"
+         label="Term 2"
+         type="number"
+       value={formik.values.term2}
+         onChange= {formik.handleChange}
+         onBlur={formik.handleBlur}
+       />
+        {formik.touched.term2 && formik.errors.term2  ? (
+        <div style={{color: 'red'}}>{formik.errors.term2}</div>
+      ) : null}
+      <TextField
+        sx={{ '&.MuiTextField-root':{
+       },
+     }}
+         name="term3"
+         label="Term 3"
+         type="number"
+       value={formik.values.term3}
+         onChange= {formik.handleChange}
+         onBlur={formik.handleBlur}
+       />
+        {formik.touched.term3 && formik.errors.term3  ? (
+        <div style={{color: 'red'}}>{formik.errors.term3}</div>
+      ) : null}
+      </>
+      : null}
+
       </div>
       <div style={{display: 'flex', justifyContent: 'center', marginTop: 20}}>
         <Button variant="contained" color='primary' size="large" 

@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
+import { updateBusfees, loading, toast } from '../../actions/busfees';
+import {postYear} from '../../actions/year'
 
 
 
@@ -23,19 +24,21 @@ const style = {
   borderRadius: 2,
 };
 
-const Adddata = ({currentId, setCurrentid, button, year}) => {
+const Adddata = ({currentId, setCurrentid, button, vchange, setVchange}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
   setOpen(false);
   setCurrentid(null);
-  setPostdata({ routeName: '' , busNumber: '', twoWayFees: '', fullFees: '', specialTrip: '', totalFees: '' });
+  setPostdata({ batchYear: '' });
   };
 
 
-  const [postData, setPostdata ] = useState ({ routeName: '' , busNumber: '', twoWayFees: '', fullFees: '', specialTrip: '', totalFees: '', year:'' });
+  const [postData, setPostdata ] = useState ({ batchYear: '' });
 
-  const postvalue = [postData]
+  const postvalue = postData;
+
+  console.log(postvalue);
 
   const dispatch = useDispatch();
 
@@ -67,11 +70,12 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
       }
       else{
 
-        dispatch(postBusfees(postvalue));
+        dispatch(postYear(postvalue));
         dispatch(loading(true));
         dispatch(toast(false));
+        // setVchange(!vchange);
       }
-      setPostdata({ routeName: '' , busNumber: '', twoWayFees: '', fullFees: '', specialTrip: '', totalFees: '' });
+      setPostdata({ batchYear: '' });
   }
 
   return (
@@ -104,53 +108,20 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
       <div>
         <TextField
           required
+          type="number"
+          maxlength="4" 
           id="outlined-required"
-          label="Route Name"
+          label="Batch Year"
           value={postData.routeName}
-          onChange= { (e)=> setPostdata({...postData, routeName: e.target.value, year: year})}
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="Bus No"
-          value={postData.busNumber}
-          onChange= { (e)=> setPostdata({...postData, busNumber: e.target.value.split(",")})}
-        />
-        <TextField
-          id="outlined-number"
-          label="Two way Fees"
-          type="number"
-          value={postData.twoWayFees}
-          onChange= { (e)=> setPostdata({...postData, twoWayFees: parseInt(e.target.value)})}
-          />
-          <TextField
-          id="outlined-number"
-          label="Full Fees"
-          type="number"
-          value={postData.fullFees}
-          onChange= { (e)=> setPostdata({...postData, fullFees: parseInt(e.target.value)})}
-          />
-          <TextField
-          id="outlined-number"
-          label="Special Trip Fees"
-          type="number"
-          value={postData.specialTrip}
-          onChange= { (e)=> setPostdata({...postData, specialTrip: parseInt(e.target.value)})}
-          />
-        <TextField
-          id="outlined-read-only-input"
-          label="Total Fees"
-          type="number"
-          value={ parseInt(postData.twoWayFees) + parseInt(postData.fullFees ) + parseInt(postData.specialTrip) }         
-          InputProps={{
-            readOnly: true,
+          onInput = {(e) =>{
+            e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,4)
           }}
+          onChange= { (e)=> setPostdata({...postData,batchYear: e.target.value})}
         />
       </div>
-      <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: 40, marginTop: 15}}>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: 15}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
-        onClick= { ()=> setPostdata({...postData, totalFees: (parseInt(postData.twoWayFees) + parseInt(postData.fullFees ) + parseInt(postData.specialTrip))})}
         >Submit</Button>
       </div> 
       </Box>

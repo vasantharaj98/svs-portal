@@ -5,6 +5,8 @@ export default(state = {authData: null}, action) => {
         case AUTH:
             localStorage.setItem("login", JSON.stringify({...action?.payload}));
             return{...state, authData: action?.payload };
+        case "LOGGEDIN":
+                return{...state, authData: JSON.parse(localStorage.getItem("login")) };
         case LOGOUT:
             localStorage.clear();
             return{...state, authData: null };

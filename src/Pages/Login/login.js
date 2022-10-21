@@ -16,9 +16,9 @@ const Login = () => {
 
   console.log("showStatus", showStatus);
 
-  const {auth, setAuth } = useContext(AuthContext);
+  const {auth, setAuth} = useContext(AuthContext);
 
-    const [value, setValue] = useState({userName:'', password:''});
+    const [value, setValue] = useState({userName:'', password:'', deviceId:''});
     const [showpassword, setShowpassword] = useState(false);
     const [loader, setLoader] = useState(false);
     const [status, setStatus] = useState(false);
@@ -40,7 +40,6 @@ const Login = () => {
         dispatch(signIn(value));
         axios.post(`${url}/login`, value).then((res) => 
         {
-        localStorage.setItem("login",JSON.stringify(res?.data));
         setAuth(res.data);
         if(auth){
           setLoader(false);
@@ -108,7 +107,7 @@ const Login = () => {
                 variant="outlined"
                 value={value.userName}
                 onChange={(e) =>
-                  setValue({ ...value, userName: e.target.value })
+                  setValue({ ...value, userName: e.target.value, deviceId: Math.floor(Math.random(0, 100) * 100000) })
                 }
               />
             </Grid>

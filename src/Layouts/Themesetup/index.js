@@ -16,6 +16,10 @@ export const theme = createTheme({
         // This is green.A700 as hex.
         main: '#f1f1f1',
       },
+      buttoncolor: {
+        // This is green.A700 as hex.
+        main: '#3d07dc',
+      },
     },
   });
 

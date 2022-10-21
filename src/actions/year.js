@@ -1,23 +1,26 @@
 import * as api from '../api/api.js';
-import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from '../constants/actionTypes.js';
+import { FETCH, CREATE, ERROR, UPDATE, DELETE, LOADING, TOAST } from '../constants/yearTypes.js';
 
 
-export const getBusfees = (year) => async (dispatch) => {
+export const getYear = () => async (dispatch) => {
     try {
-        const {data} =await api.fetchBusfees(year);
+        const {data} =await api.fetchYear();
 
         dispatch({ type : FETCH, payload: data});
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
     }
 }
 
-export const postBusfees = (newfees) => async (dispatch) => {
+export const postYear = (year) => async (dispatch) => {
     try {
-        const {data } =await api.createBusfees(newfees);
-        dispatch({ type : CREATE, payload: data});
-    } catch (error) {
-        console.log(error);
+        const { data } =await api.newYear(year);
+
+        dispatch({ type : "CREATE_YEAR", payload: data});
+
+    } catch (err) {
+        console.log(err);
+        dispatch({ type : ERROR, payload: err});
     }
 }
 

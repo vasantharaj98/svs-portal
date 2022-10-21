@@ -1,21 +1,21 @@
 import * as api from '../api/api.js';
-import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from '../constants/actionTypes.js';
+import { FETCHSTUDENT, CREATESTUDENT, UPDATE, DELETE, LOADING, TOAST } from '../constants/actionTypes.js';
 
 
-export const getBusfees = (year) => async (dispatch) => {
+export const getStudent = (year) => async (dispatch) => {
     try {
-        const {data} =await api.fetchBusfees(year);
+        const {data} =await api.fetchStudent(year);
 
-        dispatch({ type : FETCH, payload: data});
+        dispatch({ type : FETCHSTUDENT, payload: data});
     } catch (error) {
         console.log(error);
     }
 }
 
-export const postBusfees = (newfees) => async (dispatch) => {
+export const postStudent = (newfees) => async (dispatch) => {
     try {
-        const {data } =await api.createBusfees(newfees);
-        dispatch({ type : CREATE, payload: data});
+        const {data } =await api.createStudent(newfees);
+        dispatch({ type : CREATESTUDENT, payload: data});
     } catch (error) {
         console.log(error);
     }

@@ -1,7 +1,7 @@
-import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from "../constants/actionTypes";
+import { FETCH, CREATE, ERROR, UPDATE, DELETE, LOADING, TOAST } from "../constants/yearTypes";
 
 const initialstate = {
-        busfees : [],
+        data : [],
         showLoading: false,
         successMessage: false,
         Message: '',
@@ -10,48 +10,55 @@ const initialstate = {
 
 export default ( state = initialstate, action) => {
     switch (action.type) {
+        case CREATE :
+            return {
+                ...state,
+                data: [...state.data, action.payload.data],
+                successMessage: true,
+                showLoading: false,
+                Message: action.payload.status
+            };
         case FETCH :
             return  {
                 ...state, 
-                busfees : action.payload.data.busFeesList,
+                data : action.payload.data.academicYearDetailsDtoListList,
                 successMessage: false,
                 Message: action.payload.status, 
                 showLoading: false 
-            } 
+            };
         case DELETE :
             return{
                 ...state,
-                busfees : state.busfees.filter((fees) => fees._id !== action.payload ),
+                data : state.data.filter((fees) => fees._id !== action.payload ),
                 successMessage: true,
                 showLoading: false,
-                Message: "Busfees deleted successfully",
-            } 
-        case CREATE :
-                return {
-                    ...state,
-                    busfees: [...state.busfees, action.payload.data.busFeesList[0]],
-                    successMessage: true,
-                    showLoading: false,
-                    Message: action.payload.status,
-                }
+                Message: "Year deleted successfully",
+            };
+        case ERROR :
+                    return {
+                        ...state,
+                        successMessage: true,
+                        showLoading: false,
+                        Message: action.payload
+                    };
         case UPDATE :
                 return {
                     ...state,
-                    busfees : state.busfees.map((fees) => fees._id === action.payload._id ? action.payload : fees ),
+                    data : state.data.map((fees) => fees._id === action.payload._id ? action.payload : fees ),
                     successMessage: true,
                     showLoading: false,
-                    Message: "Busfees updated successfully",
-                }
+                    Message: "Year updated successfully",
+                };
         case LOADING :
                  return{
                     ...state,
                     showLoading : action.payload,
-                } 
+                }; 
         case TOAST :
                     return{
                         ...state,
                         successMessage: action.payload,
-                   }        
+                   };        
         default:
             return state;
     }

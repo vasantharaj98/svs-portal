@@ -1,7 +1,7 @@
-import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from "../constants/actionTypes";
+import { FETCHSTUDENT, CREATESTUDENT, UPDATE, DELETE, LOADING, TOAST } from "../constants/actionTypes";
 
 const initialstate = {
-        busfees : [],
+        data : [],
         showLoading: false,
         successMessage: false,
         Message: '',
@@ -10,10 +10,11 @@ const initialstate = {
 
 export default ( state = initialstate, action) => {
     switch (action.type) {
-        case FETCH :
+        case FETCHSTUDENT :
+            console.log("fetchStudent", action.payload);
             return  {
                 ...state, 
-                busfees : action.payload.data.busFeesList,
+                data : action.payload.data.studentDetailResponseList,
                 successMessage: false,
                 Message: action.payload.status, 
                 showLoading: false 
@@ -21,15 +22,16 @@ export default ( state = initialstate, action) => {
         case DELETE :
             return{
                 ...state,
-                busfees : state.busfees.filter((fees) => fees._id !== action.payload ),
+                data : state.data.filter((fees) => fees._id !== action.payload ),
                 successMessage: true,
                 showLoading: false,
                 Message: "Busfees deleted successfully",
             } 
-        case CREATE :
+        case CREATESTUDENT :
+            console.log("createstudent", action.payload);
                 return {
                     ...state,
-                    busfees: [...state.busfees, action.payload.data.busFeesList[0]],
+                    data: [...state.data, action.payload.data],
                     successMessage: true,
                     showLoading: false,
                     Message: action.payload.status,

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import MultipleValueTextInput from 'react-multivalue-text-input';
-import { postBusfees, updateBusfees, loading, toast } from '../../actions/busfees';
+import { postClass, updateBusfees, loading, toast } from '../../actions/class';
 
 
 
@@ -31,18 +31,25 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
   setOpen(false);
+  setPostdata({ className: '' , sectionName: '' });
+  setVal([]);
   setCurrentid(null);
-  setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   };
 
 
-  const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
+  const [postData, setPostdata ] = useState ({ className: '' , sectionName: '' });
 
+  const [val, setVal]=useState([]);
+
+  useEffect(()=>{
+      setPostdata({...postData, sectionName: JSON.stringify(val)});
+  },[val])
 
   const dispatch = useDispatch();
 
   const updatePost = useSelector ((state) => currentId ? state.busfees.busfees.find((p) => p._id === currentId ) : null );
 
+ 
 
   useEffect(()=>{
     if(currentId){
@@ -55,49 +62,47 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   const handleSubmit = (e) =>{
       e.preventDefault();
       setOpen(false);
-      // if(currentId){
-      //   dispatch(updateBusfees(currentId, postData));
-      //   dispatch(loading(true));
-      //   dispatch(toast(false));
-      //   setCurrentid(null);
-      //   setTimeout(() => {
-      //     setCurrentid(null);
-      //   }, dispatch(updateBusfees(currentId, postData)));
-      // }
-      // else{
+      if(currentId){
+        dispatch(updateBusfees(currentId, postData));
+        dispatch(loading(true));
+        dispatch(toast(false));
+        setCurrentid(null);
+        setTimeout(() => {
+          setCurrentid(null);
+        }, dispatch(updateBusfees(currentId, postData)));
+      }
+      else{
 
-      //   dispatch(postBusfees(postData));
-      //   dispatch(loading(true));
-      //   dispatch(toast(false));
-
-      // }
-      setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
+        dispatch(postClass(postData));
+        dispatch(loading(true));
+        dispatch(toast(false));
+      }
+      setPostdata({ className: '' , sectionName: '' });
+      setVal([]);
   }
 
-  const formik = useFormik({
-    initialValues: {
-      className: '',
-      sectionName: '',
-    },
-    validationSchema: Yup.object({
-      className: Yup.string()
-        .max(15, 'Must be 15 characters or less')
-        .required('Required'),
-      sectionName: Yup.string()
-        .required('Required'),
-    }),
-    onSubmit: values => {
-      console.log("class", values);
-      formik.resetForm();
-      setOpen(false);
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     className: '',
+  //     sectionName: '',
+  //   },
+  //   validationSchema: Yup.object({
+  //     className: Yup.string()
+  //       .max(15, 'Must be 15 characters or less')
+  //       .required('Required'),
+  //   }),
+  //   onSubmit: values => {
+  //     console.log("class", values);
+  //     formik.resetForm();
+  //     setOpen(false);
+  //   },
+  // });
 
 
   return (
     <ThemeProvider theme={theme}>
-      <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 15}}>
-      <Button onClick={handleOpen} variant="contained" color='primary'>{button}</Button>
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+      <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>{button}</Button>
       </div> 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -119,28 +124,28 @@ const Adddata = ({currentId, setCurrentid, button}) => {
       }}
       noValidate
       autoComplete="off"
-      onSubmit={formik.handleSubmit}
+      onSubmit={handleSubmit}
     >
       <div>
         <TextField
-        style={{margin:0, marginBottom: 0}}
+        style={{margin:10, marginBottom: 0}}
           id="className"
           label="Class Name"
-          value={formik.values.className}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
+          value={postData.className}
+          onChange= {(e)=> setPostdata({...postData, className: e.target.value})}
         />
-         {formik.touched.className && formik.errors.className  ? (
+         {/* {formik.touched.className && formik.errors.className  ? (
          <div style={{color: 'red'}}>{formik.errors.className}</div>
-       ) : null}
+       ) : null} */}
         <MultipleValueTextInput style={{height:'50px', marginTop: 15}}
-        onItemAdded={(item, allItems) => console.log(`Item added: ${item}`)}
-        onItemDeleted={(item, allItems) => console.log(`Item removed: ${item}`)}
+        onItemAdded={(item, allItems) => setVal([...val, item])}
+        onItemDeleted={(item, allItems) => setVal(val.filter((v)=> v !== item))}
+        id="sectionName"
         name="item-input"
         placeholder="Sections*"
         />
       </div>
-      <div style={{display: 'flex', justifyContent: 'center', marginRight: 40, marginTop: 15}}>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: 15}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
         >Submit</Button>

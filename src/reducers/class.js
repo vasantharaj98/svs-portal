@@ -1,7 +1,7 @@
-import { FETCH, CREATE, UPDATE, DELETE, LOADING, TOAST } from "../constants/actionTypes";
+import { FETCHCLASS, CREATECLASS, UPDATE, DELETE, LOADING, TOAST } from "../constants/actionTypes";
 
 const initialstate = {
-        busfees : [],
+        data : [],
         showLoading: false,
         successMessage: false,
         Message: '',
@@ -10,26 +10,25 @@ const initialstate = {
 
 export default ( state = initialstate, action) => {
     switch (action.type) {
-        case FETCH :
+        case FETCHCLASS :
             return  {
                 ...state, 
-                busfees : action.payload.data.busFeesList,
+                data : action.payload.data.classSectionList,
                 successMessage: false,
                 Message: action.payload.status, 
-                showLoading: false 
-            } 
+                showLoading: false } 
         case DELETE :
             return{
                 ...state,
-                busfees : state.busfees.filter((fees) => fees._id !== action.payload ),
+                data : state.data.filter((fees) => fees._id !== action.payload ),
                 successMessage: true,
                 showLoading: false,
-                Message: "Busfees deleted successfully",
+                Message: "Year deleted successfully",
             } 
-        case CREATE :
+        case CREATECLASS :
                 return {
                     ...state,
-                    busfees: [...state.busfees, action.payload.data.busFeesList[0]],
+                    data: [...state.data, action.payload.data],
                     successMessage: true,
                     showLoading: false,
                     Message: action.payload.status,
@@ -37,10 +36,10 @@ export default ( state = initialstate, action) => {
         case UPDATE :
                 return {
                     ...state,
-                    busfees : state.busfees.map((fees) => fees._id === action.payload._id ? action.payload : fees ),
+                    data : state.data.map((fees) => fees._id === action.payload._id ? action.payload : fees ),
                     successMessage: true,
                     showLoading: false,
-                    Message: "Busfees updated successfully",
+                    Message: "Year updated successfully",
                 }
         case LOADING :
                  return{
