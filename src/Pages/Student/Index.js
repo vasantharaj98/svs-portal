@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "../../Components/Table/Table";
 import Adddata from "./Addstudent";
-import Viewstudent from "./viewStudent";
+import Viewstudent from "./ViewStudent";
 import { Box, Typography, Autocomplete, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";

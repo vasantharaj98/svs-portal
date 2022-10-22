@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { VIEWSTUDENT, PAYMENT,  LOADING, TOAST } from "../constants/actionTypes";
 
 const initialstate = {
@@ -6,7 +7,6 @@ const initialstate = {
         successMessage: false,
         Message: '',
     };   
-
 
 export default ( state = initialstate, action) => {
     switch (action.type) {
@@ -19,21 +19,16 @@ export default ( state = initialstate, action) => {
                 showLoading: false 
             } 
         case PAYMENT :
-            console.log("apyemtpyr", action.payload);
+            const year1 = action.payload.year;
+            let studentBatchResponseMap = { ...state.data.studentBatchResponseMap };
+            studentBatchResponseMap[year1].feesPaymentTableHistory.push(
+              action.payload.data.objectList
+            );
+            studentBatchResponseMap[year1].paymentInputOptions = {...action.payload.data.paymentInputOptions};
             return {
-                ...state,
-                // data: state.data.studentBatchResponseList.map((vasa)=>
-                // vasa.batch == "2022"
-                // ? [
-                //     ...vasa,
-                //     vasa.feesPaymentTableHistory.push(action.payload.data.objectList), 
-                //     action.payload.data.paymentInputOption
-                // ]
-                // : vasa
-                // ),
+                ...state
             }
         case LOADING :
-            console.log("status", action.payload);
                  return{
                     ...state,
                     showLoading : action.payload,

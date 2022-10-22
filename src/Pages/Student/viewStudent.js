@@ -19,7 +19,8 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
 
   console.log("paymentpayment", payment);
 
-  const studentView = payment.data
+  const studentView = payment.data;
+
 
   return (
     <>
@@ -147,7 +148,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
               </Grid>
             </Grid>
           </div>
-          {studentView.studentBatchResponseList.map((v)=>{
+          {Object.values(studentView.studentBatchResponseMap).map((v)=>{
             return (
               <div
                 style={{ marginTop: 50, background: "rgb(251 249 255)", padding: 15 }}
