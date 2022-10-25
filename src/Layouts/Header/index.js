@@ -144,7 +144,44 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function MiniDrawer({auth}) {
 
-  const showLoader = useSelector((state)=> state.payment.showLoading);
+  const [showLoader, setShowloader] = useState(false);
+
+  const paymentLoader = useSelector((state)=> state.payment.showLoading);
+  const yearLoader = useSelector((state)=> state.year.showLoading);
+  const busLoader = useSelector((state)=> state.busfees.showLoading);
+  const classLoader = useSelector((state)=> state.classs.showLoading);
+  const discountLoader = useSelector((state)=> state.discount.showLoading);
+  const feesLoader = useSelector((state)=> state.fees.showLoading);
+  const studentLoader = useSelector((state)=> state.student.showLoading);
+
+
+  useEffect(()=>{
+      setShowloader(paymentLoader)
+  },[paymentLoader])
+
+  useEffect(()=>{
+    setShowloader(yearLoader)
+},[yearLoader])
+
+useEffect(()=>{
+  setShowloader(busLoader)
+},[busLoader])
+
+useEffect(()=>{
+  setShowloader(classLoader)
+},[classLoader])
+
+useEffect(()=>{
+  setShowloader(discountLoader)
+},[discountLoader])
+
+useEffect(()=>{
+  setShowloader(feesLoader)
+},[feesLoader])
+
+useEffect(()=>{
+  setShowloader(studentLoader)
+},[studentLoader])
 
   console.log("showLoader", showLoader);
 
@@ -153,14 +190,12 @@ export default function MiniDrawer({auth}) {
   const [open, setOpen] = useState(false);
   const [selectid, setSelectid] = useState('');
   const [submenu, setSubmenu] = useState(false);
-  const [loader, setLoader] = useState(false);
-
   const handleLogout=()=>{
 
-      setLoader(true);
+    setShowloader(true);
       dispatch(signOut());
       if(auth == null){
-        setLoader(false);
+        setShowloader(false);
       }
   }
 
@@ -202,7 +237,7 @@ export default function MiniDrawer({auth}) {
 
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      { showLoader  && <Loader></Loader> || loader && <Loader></Loader> }
+      { showLoader  && <Loader></Loader> }
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton

@@ -44,15 +44,11 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
   setOpen(false);
-  setCurrentid(null);
+  // setCurrentid(null);
   setRoute({routeName: ""});
   setDiscount({disCount: ""});
   setDate({dob: null});
-  setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   };
-
-
-  const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
 
 
   const dispatch = useDispatch();
@@ -114,36 +110,12 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
         formik.setFieldValue('discountUuid',  discountuidd);
     },[discount])
 
-  useEffect(()=>{
-    if(currentId){
-      setOpen(true);
-      setPostdata(updatePost);
-    }
-},[updatePost])
-
-
-  const handleSubmit = (e) =>{
-      e.preventDefault();
-      setOpen(false);
-      // if(currentId){
-      //   dispatch(updateBusfees(currentId, postData));
-      //   dispatch(loading(true));
-      //   dispatch(toast(false));
-      //   setCurrentid(null);
-      //   setTimeout(() => {
-      //     setCurrentid(null);
-      //   }, dispatch(updateBusfees(currentId, postData)));
-      // }
-      // else{
-
-      //   dispatch(postBusfees(postData));
-      //   dispatch(loading(true));
-      //   dispatch(toast(false));
-
-      // }
-      setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
-  }
-
+//   useEffect(()=>{
+//     if(currentId){
+//       setOpen(true);
+//       setPostdata(updatePost);
+//     }
+// },[updatePost])
 
 
   const formik = useFormik({
@@ -186,6 +158,7 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
       dispatch(postStudent(values));
       formik.resetForm();
       handleClose();
+      dispatch(loading(true));
       // setOpen(false);
     },
   });
