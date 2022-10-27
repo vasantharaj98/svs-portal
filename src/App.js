@@ -4,7 +4,7 @@ import Class from "./Pages/Class/index.js";
 import Bus from "./Pages/Bus/index.js";
 import Discount from "./Pages/Discount/index.js";
 import Student from "./Pages/Student/Index.js";
-import Fees from "./Pages/Fees/index.js";
+import Fees from "./Pages/Fees/Index.js";
 import Year from "./Pages/Year/index";
 import Login from "./Pages/Login/login";
 import Auth from "./Auth/Auth.js";
@@ -32,6 +32,7 @@ function App() {
 
   const [year, setYear] = useState("2022");
 
+  const defaultStudent = ({ batch: year, size: 10, page: 0, paid:'all', className: null, sectionName:null, studentName:null, discountUuid:null, balance: 0})
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function App() {
     dispatch(getYear());
     dispatch(getFees(year));
     dispatch(getBusfees(year));
-    dispatch(getStudent(year));
+    dispatch(getStudent(defaultStudent));
     dispatch(loading(false));
     dispatch(toast(false));
   }, [dispatch, vchange, auth]);

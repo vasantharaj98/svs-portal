@@ -7,11 +7,13 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-  { id: 'className', label: 'Class Name', minWidth: 170 },
-      { id: 'tuitionFees',align: 'center', label: 'Tution Fees', minWidth: 100 },
+  { id: 'className', label: 'Class Name', minWidth: 100 },
       { id: 'bookFees',align: 'center', label: 'Book Fees', minWidth: 100 },
-      { id: 'totalFees',align: 'center', label: 'Total', minWidth: 100 },
-      { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
+      { id: 'term1',align: 'center', label: 'Term 1', minWidth: 100 },
+      { id: 'term2',align: 'center', label: 'Term 2', minWidth: 100 },
+      { id: 'term3',align: 'center', label: 'Term 3', minWidth: 100 },
+      { id: 'totalFees',align: 'center', label: 'Total Fees', minWidth: 100 },
+      { id: 'action', label: 'Action', minWidth: 100, align: 'center', actiontype:[{edit: true, delete: true}]}
 ];
   
 

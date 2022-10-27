@@ -6,14 +6,12 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import {Autocomplete} from '@mui/material';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../../Layouts/Themesetup/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { postFees, updateBusfees, loading, toast } from '../../actions/fees';
+import { postFees, loading, toast } from '../../actions/fees';
 
 
 
@@ -28,19 +26,13 @@ const style = {
   borderRadius: 2,
 };
 
-// const top100Films = ['A', 'B'];
-
-const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) => {
+const Adddata = ({currentId, setCurrentid, button, year}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
+  formik.resetForm();
   setOpen(false);
-  setCurrentid(null);
-  setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
   };
-
-
-  const [postData, setPostdata ] = useState ({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
 
 
   const dispatch = useDispatch();
@@ -51,67 +43,16 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
     return ye.className;
  });
 
-  const updatePost = useSelector ((state) => currentId ? state.busfees.busfees.find((p) => p._id === currentId ) : null );
-
-
-  useEffect(()=>{
-    if(currentId){
-      setOpen(true);
-      setPostdata(updatePost);
-    }
-},[updatePost])
-
-
-  const handleSubmit = (e) =>{
-      e.preventDefault();
-      setOpen(false);
-      if(currentId){
-        dispatch(updateBusfees(currentId, postData));
-        dispatch(loading(true));
-        dispatch(toast(false));
-        setCurrentid(null);
-        setTimeout(() => {
-          setCurrentid(null);
-        }, dispatch(updateBusfees(currentId, postData)));
-        // if(dispatch(updateBusfees(currentId, postData))){
-        //   setCurrentid(null);
-        // };
-      }
-      else{
-
-        // dispatch(postBusfees(postData));
-        dispatch(loading(true));
-        dispatch(toast(false));
-
-      }
-      setPostdata({ routename: '' , busno: '', twowayfees: '', fullfees: '', specialtripfees: '', totalfees: '' });
-  }
-
-  const [value, setValue] = useState({className:[]});
-
-  const classValue = value.className.join();
-
-  useEffect(()=>{
-    formik.setFieldValue('className', classValue)
-    formik.setFieldValue('year', year)
-  },[classValue])
-
-  // console.log("valuevalue", classValue);
-
   const formik = useFormik({
     initialValues: {
       className: '',
-      tuitionFees: 0,
       bookFees: 0,
-      hasTermFees: true,
       term1: 0,
       term2: 0,
       term3: 0,
       year: ''
     },
     validationSchema: Yup.object({
-      tuitionFees: Yup.number()
-        .required('Required'),
      bookFees: Yup.number()
         .required('Required'),
      term1: Yup.number()
@@ -127,7 +68,7 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
       dispatch(loading(true));
       dispatch(toast(false));
       formik.resetForm();
-      setOpen(false);
+      handleClose();
     },
   });
 
@@ -160,45 +101,18 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
       <div style={{display: 'flex'}}>
       <div>
       <Autocomplete
-        multiple
+        disablePortal
         id="className"
         name="className"
-        onChange={(event, newValue) => {
-          setValue({className: newValue});
-        }}
         options={top100Films}
-        getOptionLabel={(option) => option}
-        filterSelectedOptions
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            sx={{ '&.MuiTextField-root':{
-              
-            },
-          }}
-            label="Select Class Name"
-            placeholder="classnames"
-            value={formik.values?.className}
-          />
-        )}
-      />
-      </div>
-      <div>
-        <TextField
-        sx={{ '&.MuiTextField-root':{
-        },
-      }}
-          type='number'
-          name="tuitionFees"
-          label="Tuition Fees"
-          value={formik.values.tuitionFees}
-          onChange= {formik.handleChange}
-          onBlur={formik.handleBlur}
+        value={formik.values?.className}
+        onChange={(event, value) => {
+          formik.setFieldValue('className', value)
+          formik.setFieldValue('year', year)
+        }}
+        renderInput={(params) => <TextField {...params} label="Select Class Name" />}
         />
-         {formik.touched.tuitionFees && formik.errors.tuitionFees  ? (
-         <div style={{color: 'red'}}>{formik.errors.tuitionFees}</div>
-       ) : null}
-       </div>
+      </div>
        <div>
         <TextField
          sx={{ '&.MuiTextField-root':{
@@ -215,13 +129,8 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
          <div style={{color: 'red'}}>{formik.errors.bookFees}</div>
        ) : null}
        </div>
-       </div>
-        <FormControlLabel sx={{ marginLeft: 1}} control={<Checkbox name="hasTermFees" defaultChecked onChange= {formik.handleChange} />} label="Term Fees" />
-
-        <div>
-        { formik.values.hasTermFees ? 
-        <>
-        <TextField
+       <div>
+       <TextField
         sx={{ '&.MuiTextField-root':{
        },
      }}
@@ -235,6 +144,10 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
         {formik.touched.term1 && formik.errors.term1  ? (
         <div style={{color: 'red'}}>{formik.errors.term1}</div>
       ) : null}
+       </div>
+       </div>
+        <div style={{display: 'flex'}}>
+      <div>
       <TextField
         sx={{ '&.MuiTextField-root':{
        },
@@ -249,6 +162,8 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
         {formik.touched.term2 && formik.errors.term2  ? (
         <div style={{color: 'red'}}>{formik.errors.term2}</div>
       ) : null}
+      </div>
+      <div>
       <TextField
         sx={{ '&.MuiTextField-root':{
        },
@@ -263,9 +178,22 @@ const Adddata = ({currentId, setCurrentid, button, vchange, setVchange, year}) =
         {formik.touched.term3 && formik.errors.term3  ? (
         <div style={{color: 'red'}}>{formik.errors.term3}</div>
       ) : null}
-      </>
-      : null}
-
+      </div>
+      <div>
+        <TextField
+        sx={{ '&.MuiTextField-root':{
+        },
+      }}
+          type='number'
+          name="totalFees"
+          label="Total Fees"
+          value={parseInt(formik.values.bookFees)+parseInt(formik.values.term1)+parseInt(formik.values.term2)+parseInt(formik.values.term3)}
+          id="outlined-read-only-input"
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+       </div>
       </div>
       <div style={{display: 'flex', justifyContent: 'center', marginTop: 20}}>
         <Button variant="contained" color='primary' size="large" 

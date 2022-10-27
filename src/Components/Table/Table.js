@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { deleteBusfees, toast } from '../../actions/busfees';
@@ -31,7 +32,7 @@ import { viewStudent, loading } from '../../actions/payment';
       border: 0,
   }));
 
-const Schooltable = ({setCurrentid, columns, rows, setView}) => {
+const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid}) => {
   
   const dispatch = useDispatch();
 
@@ -68,12 +69,13 @@ return (
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
+                  {column.closeIcon && <HighlightOffIcon onClick={()=> setHeaderid(column.id)}/>}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-          {rows.length == 0 && <TableCell component="th" colSpan="0" align="center" scope="row">No data found</TableCell>}
+          {rows.length == 0 && <TableCell component="th" colSpan={columns.length} align="center" scope="row">No data found</TableCell>}
             {
           rows?.map((row) => (
             <TableRow
@@ -84,7 +86,7 @@ return (
                 return(
                   <>
                   <TableCell component="th" align={column.align} scope="row">
-                  {row[column.id] == 1 ? "Yes" :
+                  {row[column.id] == true ? "Yes" :
                   !row[column.id] == "" ? row[column.id] : 
                   column.id === "action"
                   ? 

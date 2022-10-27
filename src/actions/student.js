@@ -2,9 +2,9 @@ import * as api from '../api/api.js';
 import { FETCHSTUDENT, CREATESTUDENT, UPDATE, DELETE, LOADING, TOAST } from '../constants/actionTypes.js';
 
 
-export const getStudent = (year) => async (dispatch) => {
+export const getStudent = (val) => async (dispatch) => {
     try {
-        const {data} =await api.fetchStudent(year);
+        const {data} =await api.fetchStudent(val);
 
         dispatch({ type : FETCHSTUDENT, payload: data});
     } catch (error) {

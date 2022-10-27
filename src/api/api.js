@@ -44,7 +44,7 @@ export const createFees = (val) => API.post('/api/tuitionFees/addTuitionFees', v
 
 // Student
 
-export const fetchStudent = (year) => API.get(`/api/studentList/${year}/size/10/page/0`);
+export const fetchStudent = (val) => API.post('/api/studentList', val);
 export const createStudent = (val) => API.post('/api/addStudentDetail', val);
 
 // Payment

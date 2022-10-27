@@ -17,6 +17,7 @@ export const postFees = (newfees) => async (dispatch) => {
         const {data } =await api.createFees(newfees);
         dispatch({ type : CREATEFEES, payload: data});
     } catch (error) {
+        dispatch({ type : "FAILED", payload: error.response.data.message});
         console.log(error);
     }
 }

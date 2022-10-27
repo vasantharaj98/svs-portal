@@ -35,6 +35,14 @@ export default ( state = initialstate, action) => {
                     showLoading: false,
                     Message: action.payload.status,
                 }
+        case "FAILED" :
+                return {
+                    ...state,
+                    fees: [...state.fees],
+                    successMessage: true,
+                    showLoading: false,
+                    Message: action.payload,
+                }
         case UPDATE :
                 return {
                     ...state,
