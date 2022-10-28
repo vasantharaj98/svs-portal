@@ -23,7 +23,7 @@ const columns = [
   {
     id: "action",
     label: "Action",
-    minWidth: 100,
+    minWidth: 200,
     align: "center",
     actiontype: [{ view: true, edit: true, delete: true }],
   },
@@ -63,6 +63,10 @@ const Bus = ({
   currentId,
   setCurrentid,
 }) => {
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const student = useSelector((state) => state.student);
   const className = useSelector((state)=> state.classs);
   const DisCount = useSelector((state)=> state.discount);
@@ -79,6 +83,11 @@ const Bus = ({
   const top100Films = batchYear?.data.map((ye) => {
     return ye.batchYear;
   });
+
+  useEffect(()=>{
+      formik.setFieldValue('page', page);
+      formik.setFieldValue('size', rowsPerPage);
+  },[page, rowsPerPage])
 
   useEffect(() => {
     if (student.successMessage) {
@@ -100,8 +109,7 @@ const Bus = ({
 
   const tabelCol = headvalue.filter((va) => va.id !== headerid);
 
-  const tabelView = tagbar.filter((va) => va.id !== tablerow.id);
-  const tableView2 = tableHeader.filter((va) => va.id === headerid);
+  const tabelView = tagbar
 
   const [discount, setDiscount] = useState({disCount: ''});
 
@@ -111,18 +119,22 @@ const Bus = ({
 
   useEffect(() => {
     setHeadvalue(tabelCol);
-    setTagbar([...tagbar, tableView2[0]]);
-    // setHeaderid(null);
   }, [headerid]);
 
   const handleClick = (e) => {
-    setTablerow({
-      id: e.target.name,
-      label: e.target.value,
-      align: "center",
-      minWidth: 100,
-      closeIcon: true,
-    });
+    if(e.target.checked){
+      setTablerow({
+        id: e.target.name,
+        label: e.target.value,
+        align: "center",
+        minWidth: 100,
+        closeIcon: true,
+      });
+      setHeaderid(null);
+    }
+    else{
+      setHeaderid(e.target.name);
+    }
   };
 
   useEffect(() => {
@@ -161,7 +173,7 @@ const Bus = ({
   const formik = useFormik({
     initialValues: {
       batch: '',
-      size: 10,
+      size: 0,
       page: 0,
       paid:'all',
       className: null,
@@ -234,11 +246,10 @@ const Bus = ({
                 gap: "15px",
               }}
             >
-              <TextField sx={{maxWidth: '150px'}} type="number" id="outlined-basic" name="size" onChange={formik.handleChange} value={formik.values.size} label="Size" variant="outlined" />
-              <TextField sx={{maxWidth: '150px'}} type="number" id="outlined-basic" name="page" onChange={formik.handleChange} value={formik.values.page} label="Page" variant="outlined" />
               <FormControl sx={{minWidth: '150px'}}>
-                <InputLabel id="demo-simple-select-label">Paid</InputLabel>
+                <InputLabel size="small" id="demo-simple-select-label">Paid</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={formik.values.paid}
@@ -252,8 +263,9 @@ const Bus = ({
                 </Select>
               </FormControl>
               <FormControl sx={{minWidth: '150px'}}>
-                <InputLabel id="demo-simple-select-label">Class Name</InputLabel>
+                <InputLabel size="small" id="demo-simple-select-label">Class Name</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={formik.values.className}
@@ -267,8 +279,9 @@ const Bus = ({
                 </Select>
               </FormControl>
               <FormControl sx={{minWidth: '150px'}}>
-                <InputLabel id="demo-simple-select-label">Section Name</InputLabel>
+                <InputLabel size="small" id="demo-simple-select-label">Section Name</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={formik.values.sectionName}
@@ -282,10 +295,11 @@ const Bus = ({
                       : null}
                 </Select>
               </FormControl>
-              <TextField sx={{maxWidth: '150px'}} id="outlined-basic" name="studentName" onChange={formik.handleChange} value={formik.values.studentName} label="Student Name" variant="outlined" />
+              <TextField size="small" sx={{maxWidth: '150px'}} id="outlined-basic" name="studentName" onChange={formik.handleChange} value={formik.values.studentName} label="Student Name" variant="outlined" />
               <FormControl sx={{minWidth: '150px'}}>
-                <InputLabel id="demo-simple-select-label">Discount Name</InputLabel>
+                <InputLabel size="small" id="demo-simple-select-label">Discount Name</InputLabel>
                 <Select
+                  size="small"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   label="Discount Name"
@@ -297,12 +311,12 @@ const Bus = ({
                       })}
                 </Select>
               </FormControl>
-              <TextField sx={{maxWidth: '150px'}} id="outlined-basic" name="balance" onChange={formik.handleChange} value={formik.values.balance} label="Balance" variant="outlined" />
+              <TextField size="small" sx={{maxWidth: '150px'}} id="outlined-basic" name="balance" onChange={formik.handleChange} value={formik.values.balance} label="Balance" variant="outlined" />
               <Button variant="contained" size="large" type="submit" sx={{color: '#fff'}}>
                 Search
               </Button>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -322,13 +336,20 @@ const Bus = ({
                   {va.label}
                 </Button>
               ))}
-            </Box>
+            </Box> */}
             <Table
               setCurrentid={setCurrentid}
               columns={headvalue}
               rows={studentView}
               setHeaderid={setHeaderid}
               setView={setView}
+              tagbar={tagbar}
+              handleClick={handleClick}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              headvalue={headvalue}
             />
           </div>
         )}
