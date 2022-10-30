@@ -70,7 +70,7 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    const checkval = headvalue.map((va)=> va);
+    const checkval = headvalue?.map((va)=> va);
 
 return (
   <>
