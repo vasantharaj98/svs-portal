@@ -113,28 +113,28 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
           required
           id="outlined-required"
           label="Bus No"
-          value={postData.busNumber}
+          value={postData?.busNumber}
           onChange= { (e)=> setPostdata({...postData, busNumber: e.target.value.split(",")})}
         />
         <TextField
           id="outlined-number"
           label="Two way Fees"
           type="number"
-          value={postData.twoWayFees}
+          value={postData?.twoWayFees}
           onChange= { (e)=> setPostdata({...postData, twoWayFees: parseInt(e.target.value)})}
           />
           <TextField
           id="outlined-number"
           label="Full Fees"
           type="number"
-          value={postData.fullFees}
+          value={postData?.fullFees}
           onChange= { (e)=> setPostdata({...postData, fullFees: parseInt(e.target.value)})}
           />
           <TextField
           id="outlined-number"
           label="Special Trip Fees"
           type="number"
-          value={postData.specialTrip}
+          value={postData?.specialTrip}
           onChange= { (e)=> setPostdata({...postData, specialTrip: parseInt(e.target.value)})}
           />
         <TextField
