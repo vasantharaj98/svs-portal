@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-  { id: 'className', label: 'Class Name', minWidth: 100 },
+  { id: 'className', align: 'center', label: 'Class Name', minWidth: 100 },
       { id: 'bookFees',align: 'center', label: 'Book Fees', minWidth: 100 },
       { id: 'term1',align: 'center', label: 'Term 1', minWidth: 100 },
       { id: 'term2',align: 'center', label: 'Term 2', minWidth: 100 },
@@ -46,18 +46,19 @@ const Bus = ({currentId, setCurrentid, vchange, setVchange, year, setYear}) => {
     <>
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600'}} >Academic Fees</Typography>
+        <Typography variant="h6" sx={{ fontWeight: '600'}} >Academic Fees</Typography>
         <Autocomplete
+        size='small'
         disablePortal
         id="combo-box-demo"
         options={top100Films}
-        sx={{ width: 300 }}
+        sx={{ width: 150 }}
         value={top100Films ? year : null}
         onChange={(event, value) => {
           setYear(value) ;
           setVchange(!vchange);
         }}
-        renderInput={(params) => <TextField {...params} label="Select Year" />}
+        renderInput={(params) => <TextField size='small' {...params} label="Select Batch" />}
         />
         <Adddata currentId={currentId} year={year} setCurrentid={setCurrentid} button="Add Academic Fees"></Adddata>
     </Box>

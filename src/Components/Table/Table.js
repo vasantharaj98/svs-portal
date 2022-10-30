@@ -152,6 +152,11 @@ return (
                         component="th"
                         align={column.align}
                         scope="row"
+                        sx={{
+                          "&.MuiTableCell-root": { 
+                            padding: 1 
+                          }
+                        }}
                       >
                         {row[column.id] == true ? (
                           "Yes"
@@ -171,7 +176,7 @@ return (
                                       }}
                                     >
                                       <VisibilityIcon
-                                        sx={{ color: "#fff" }}
+                                        sx={{ color: "#fff", fontSize: 20 }}
                                       ></VisibilityIcon>
                                     </Button>
                                   )}
@@ -184,7 +189,7 @@ return (
                                       }}
                                     >
                                       <EditIcon
-                                        sx={{ color: "#fff" }}
+                                        sx={{ color: "#fff", fontSize: 20 }}
                                       ></EditIcon>
                                     </Button>
                                   )}
@@ -197,7 +202,7 @@ return (
                                       }}
                                       sx={{ background: "#dc0707" }}
                                     >
-                                      <DeleteIcon sx={{ color: "#fff" }} />
+                                      <DeleteIcon sx={{ color: "#fff", fontSize: 20 }} />
                                     </Button>
                                   )}
                                 </>

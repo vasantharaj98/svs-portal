@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'className', label: 'Class', minWidth: 170 },
-    { id: 'sectionName',align: 'center', label: 'Section', minWidth: 170 },
-    { id: 'action', label: 'Action', minWidth: 170, align: 'center', actiontype:[{edit: true, delete: true}]}
+    { id: 'className', align: 'center', label: 'Class', minWidth: 100 },
+    { id: 'sectionName',align: 'center', label: 'Section', minWidth: 100 },
+    { id: 'action', label: 'Action', minWidth: 100, align: 'center', actiontype:[{edit: true, delete: true}]}
   ];
 const rows=[
   {
@@ -43,7 +43,7 @@ const Bus = ({currentId, setCurrentid, vchange, setVchange}) => {
     <>
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600'}} >Class</Typography>
+        <Typography variant="h6" sx={{ fontWeight: '600'}} >Class</Typography>
         <Adddata currentId={currentId} setCurrentid={setCurrentid} button="Add Class"></Adddata>
     </Box>
     <Table setCurrentid={setCurrentid} columns={columns} rows={ classes?.data} />

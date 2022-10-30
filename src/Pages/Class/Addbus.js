@@ -102,7 +102,7 @@ const Adddata = ({currentId, setCurrentid, button}) => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-      <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>{button}</Button>
+      <Button onClick={handleOpen} variant="contained" size="medium" color='buttoncolor' sx={{color: '#fff'}}>{button}</Button>
       </div> 
       <Modal
         aria-labelledby="transition-modal-title"

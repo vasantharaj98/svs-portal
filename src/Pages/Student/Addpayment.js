@@ -135,7 +135,7 @@ const Adddata = ({button, year, data, currentId}) => {
           justifyContent: "flex-end",
         }}
       >
-        <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>
+        <Button onClick={handleOpen} variant="contained" size="medium" color='buttoncolor' sx={{color: '#fff'}}>
           {button}
         </Button>
       </div>

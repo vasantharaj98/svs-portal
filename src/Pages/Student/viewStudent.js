@@ -34,21 +34,21 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
               }}
               variant="contained"
               color="lightblack"
-              style={{ height: "60px", boxShadow: "unset" }}
+              style={{ height: "50px", boxShadow: "unset", minWidth: '30px' }}
             >
               <ArrowBackIos style={{ marginLeft: 5, color: "#000" }} />
             </Button>
             <Typography
-              variant="h5"
-              sx={{ width: "100%", textAlign: "center" }}
+              variant="h6"
+              sx={{ width: "100%", textAlign: "center", fontWeight: 600 }}
             >
               View Details
             </Typography>
           </div>
-          <div style={{ marginTop: 50 }}>
+          <div style={{ marginTop: 30 }}>
             <Grid container spacing={2}>
               <Grid item xs={3}>
-                <AccountCircle sx={{ fontSize: 150 }} />
+                <AccountCircle sx={{ fontSize: 130 }} />
               </Grid>
               <Grid item xs={3}>
                 <div>
@@ -61,7 +61,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.studentId}
                   </Typography>
@@ -76,7 +76,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.name}
                   </Typography>
@@ -93,7 +93,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.mobileNumber}
                   </Typography>
@@ -108,7 +108,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.adharNumber}
                   </Typography>
@@ -125,7 +125,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.email}
                   </Typography>
@@ -140,7 +140,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ width: "100%", textAlign: "left" }}
+                    sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                   >
                     {studentView.dob}
                   </Typography>
@@ -166,7 +166,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                       </Typography>
                       <Typography
                         variant="h6"
-                        sx={{ width: "100%", textAlign: "left" }}
+                        sx={{ width: "100%", textAlign: "left",fontSize: 17, fontWeight: 600 }}
                       >
                         {v.className}
                       </Typography>
@@ -183,7 +183,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                       </Typography>
                       <Typography
                         variant="h6"
-                        sx={{ width: "100%", textAlign: "left" }}
+                        sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                       >
                         {v.section}
                       </Typography>
@@ -200,7 +200,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                       </Typography>
                       <Typography
                         variant="h6"
-                        sx={{ width: "100%", textAlign: "left" }}
+                        sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                       >
                         {v.discountType}
                       </Typography>
@@ -219,7 +219,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                           </Typography>
                           <Typography
                             variant="h6"
-                            sx={{ width: "100%", textAlign: "left" }}
+                            sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                           >
                             {v.routeName}
                           </Typography>
@@ -236,7 +236,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                           </Typography>
                           <Typography
                             variant="h6"
-                            sx={{ width: "100%", textAlign: "left" }}
+                            sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                           >
                             {v.busNumber}
                           </Typography>
@@ -253,7 +253,7 @@ const ViewStudent = ({setView, year, setCurrentid, currentId}) => {
                           </Typography>
                           <Typography
                             variant="h6"
-                            sx={{ width: "100%", textAlign: "left" }}
+                            sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                           >
                             {v.hasSpecialTrip}
                           </Typography>

@@ -177,7 +177,7 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
         <Button variant="outlined" color="primary" sx={{ mx: 2 }}>
           {<GetApp />}Import
         </Button>
-        <Button onClick={handleOpen} variant="contained" size="large" color='buttoncolor' sx={{color: '#fff'}}>
+        <Button onClick={handleOpen} variant="contained" size='medium' color='buttoncolor' sx={{color: '#fff'}}>
           {button}
         </Button>
       </div>

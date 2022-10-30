@@ -44,7 +44,7 @@ const Bus = ({currentId, setCurrentid, vchange, setVchange}) => {
     <>
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600' }} >Batch Year</Typography>
+        <Typography variant="h6" sx={{ fontWeight: '600' }} >Batch Year</Typography>
         <Adddata currentId={currentId} setCurrentid={setCurrentid} vchange={vchange} setVchange={setVchange} button="Add Batch Year"></Adddata>
     </Box>
     <Table setCurrentid={setCurrentid} columns={columns} rows={year.data} />

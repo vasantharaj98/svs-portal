@@ -7,40 +7,40 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const columns = [
-    { id: 'routeName', label: 'Route Name', minWidth: 170 },
+    { id: 'routeName', align: 'center', label: 'Route Name', minWidth: 100 },
     { id: 'busNumber',align: 'center', label: 'Bus\u00a0No', minWidth: 100 },
     {
       id: 'twoWayFees',
       label: 'Two Way Fees',
-      minWidth: 170,
+      minWidth: 100,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'fullFees',
       label: 'Full Fess',
-      minWidth: 170,
+      minWidth: 100,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'specialTrip',
       label: 'Special Trip Fees',
-      minWidth: 170,
+      minWidth: 100,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'totalFees',
       label: 'Total Fess',
-      minWidth: 170,
+      minWidth: 100,
       align: 'center',
       format: (value) => value.toLocaleString('en-IN'),
     },
     {
       id: 'action',
       label: 'Action',
-      minWidth: 170,
+      minWidth: 100,
       align: 'center',
       actiontype:[{
         edit: true, 
@@ -79,18 +79,19 @@ const Bus = ({currentId, setCurrentid, year, setYear, vchange, setVchange}) => {
     <>
     <Tablebox>
     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
-        <Typography variant="h5" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
+        <Typography variant="h6" sx={{ fontWeight: '600' }} >Bus Fees</Typography>
         <Autocomplete
         disablePortal
+        size='small'
         id="combo-box-demo"
         options={top100Films}
-        sx={{ width: 300 }}
+        sx={{ width: 150 }}
         value={top100Films ? year : null}
         onChange={(event, value) => {
           setYear(value) ;
           setVchange(!vchange);
         }}
-        renderInput={(params) => <TextField {...params} label="Select Year" />}
+        renderInput={(params) => <TextField size='small' {...params} label="Select Batch" />}
         />
         <Adddata currentId={currentId} year={year} setCurrentid={setCurrentid} button="Add Bus Fees"></Adddata>
     </Box>

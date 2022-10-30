@@ -58,8 +58,6 @@ const Tablebox = styled("div")(({ theme }) => ({
 const Bus = ({
   year,
   setYear,
-  vchange,
-  setVchange,
   currentId,
   setCurrentid,
 }) => {
@@ -84,7 +82,16 @@ const Bus = ({
     return ye.batchYear;
   });
 
+  const [filtervalue, setFiltervalue] =  useState({ batch: year, size: 10, page: 0, paid:'all', className: null, sectionName:null, studentName:null, discountUuid:null, balance: 0});
+
   useEffect(()=>{
+    dispatch(getStudent(filtervalue));
+    },[dispatch, filtervalue])
+
+  console.log("filtervalue", filtervalue);
+
+  useEffect(()=>{
+      setFiltervalue({...filtervalue, size: rowsPerPage, page: page});
       formik.setFieldValue('page', page);
       formik.setFieldValue('size', rowsPerPage);
   },[page, rowsPerPage])
@@ -167,13 +174,16 @@ const Bus = ({
 
     useEffect(()=>{
       formik.setFieldValue('discountUuid',  discountuidd);
-      formik.setFieldValue('batch', year)
   },[discount])
+
+  useEffect(()=>{
+    formik.setFieldValue('batch', year);
+  },[year])
 
   const formik = useFormik({
     initialValues: {
       batch: '',
-      size: 0,
+      size: 10,
       page: 0,
       paid:'all',
       className: null,
@@ -183,11 +193,12 @@ const Bus = ({
       balance: 0
     },
     onSubmit: values => {
+      setFiltervalue(values);
       // dispatch(postStudent(values));
-      dispatch(getStudent(values));
+      // dispatch(getStudent(values));
       console.log("searchValue", values);
-      setDiscount({disCount: ''});
-      formik.resetForm();
+      // setDiscount({disCount: ''});
+      // formik.resetForm();
       // dispatch(loading(true));
     },
   });
@@ -209,43 +220,48 @@ const Bus = ({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: "20px",
+                marginBottom: "7px",
                 flexWrap: "wrap",
               }}
             >
-              <Typography variant="h5" sx={{ fontWeight: "600" }}>
+              <Typography variant="h6" sx={{ fontWeight: "600" }}>
                 Students
               </Typography>
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={top100Films}
-                sx={{ width: 300 }}
-                value={top100Films ? year : null}
-                onChange={(event, value) => {
-                  setYear(value);
-                  setVchange(!vchange);
-                }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Select Year" />
-                )}
-              />
               <Adddata year={year} button="Add Student"></Adddata>
             </Box>
+            <Typography variant="p" sx={{ fontWeight: "600" }}>
+                Filters :
+              </Typography>
             <Box
              component="form"
              noValidate
              autoComplete="off"
              onSubmit={formik.handleSubmit}
               sx={{
+                background: "#fafafa",
+                padding: 2,
                 display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginBottom: "20px",
+                justifyContent: "space-between",
+                alignItems: "end",
+                my: "10px",
                 flexWrap: "wrap",
                 gap: "15px",
               }}
             >
+               <Autocomplete
+                disablePortal
+                size="small"
+                id="combo-box-demo"
+                options={top100Films}
+                sx={{ minWidth: '150px' }}
+                value={top100Films ? year : null}
+                onChange={(event, value) => {
+                  setYear(value);
+                }}
+                renderInput={(params) => (
+                  <TextField size="small" {...params} label="Select Year" />
+                )}
+              />
               <FormControl sx={{minWidth: '150px'}}>
                 <InputLabel size="small" id="demo-simple-select-label">Paid</InputLabel>
                 <Select
