@@ -15,6 +15,7 @@ export const getStudent = (val) => async (dispatch) => {
 export const postStudent = (newfees) => async (dispatch) => {
     try {
         const {data } =await api.createStudent(newfees);
+        data.stu = "vasa";
         dispatch({ type : CREATESTUDENT, payload: data});
     } catch (error) {
         console.log(error);

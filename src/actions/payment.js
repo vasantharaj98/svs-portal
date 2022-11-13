@@ -14,8 +14,7 @@ export const viewStudent = (sId, setView) => async (dispatch) => {
 export const paymentStudent = (value) => async (dispatch) => {
     try {
         const {data } =await api.payStudent(value);
-        data.year = value.year
-        console.log("data", data);
+        data.year = value.year;
         dispatch({ type : PAYMENT, payload: data});
     } catch (error) {
         console.log(error);

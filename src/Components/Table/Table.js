@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -72,6 +72,28 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
 
     const checkval = headvalue?.map((va)=> va);
 
+    const [tag, setTag] = useState(null);
+
+    useEffect(()=>{
+      var arrays = [], size = 10;
+      for (let i = 0; i < tagbar?.length; i += size)
+      arrays.push(tagbar.slice(i, i + size));
+      console.log("arrays", arrays);
+      if(tag === null){
+        setTag(arrays)
+      }
+      else{
+        setTag(arrays)
+      }
+    },[tagbar]);
+
+    useEffect(()=>{
+      tag?.map(va =>
+        va.map( i=>
+          console.log("vasa", i))
+        )
+    },[tag])
+
 return (
   <>
     <Paper sx={{ width: "100%", overflow: "hidden", marginBottom: 2 }}>
@@ -93,7 +115,7 @@ return (
               ))}
               {tagbar && (
                 <TableCell align="right">
-                  <MoreVertIcon onClick={handleClick5} />
+                  <MoreVertIcon onClick={handleClick5} sx={{cursor:"pointer"}} />
                   <Popover
                     id={id}
                     open={open}
@@ -115,14 +137,18 @@ return (
                         gap: "10px",
                       }}
                     >
-                      <FormGroup>
-                        {tagbar.map((va)=>(
-                          <FormControlLabel
-                          control={<Checkbox name={va.id} value={va.label} checked={(checkval.filter((v)=>v.id === va.id))[0]?.id === va.id ? "checked":""} onClick={handleClick} />}
-                          label={va.label}
-                        />
+                      <div style={{display: 'flex', justifyContent:"space-between"}}>
+                        {tag?.map((va)=>(
+                          <div key={va} style={{display: 'flex', flexDirection: 'column'}}>
+                            {va.map((e)=>(
+                              <FormControlLabel
+                                control={<Checkbox name={e.id} value={e.label} checked={(checkval.filter((v)=>v.id === e.id))[0]?.id === e.id ? "checked":""} onChange={handleClick} />}
+                                label={e.label}
+                              />
+                            ))}
+                        </div>
                         ))}
-                      </FormGroup>
+                      </div>
                     </Box>
                   </Popover>
                 </TableCell>
@@ -130,7 +156,7 @@ return (
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.length == 0 && (
+            {rows?.length === 0 && (
               <TableCell
                 component="th"
                 colSpan={columns.length}

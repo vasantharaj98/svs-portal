@@ -22,6 +22,7 @@ import { getClass } from "./actions/class.js";
 import { getDiscount } from "./actions/discount";
 import { getFees } from "./actions/fees.js";
 import { getStudent } from "./actions/student.js";
+import { signIn } from "./actions/auth.js";
 
 function App() {
   const { auth, setAuth } = useContext(AuthContext);

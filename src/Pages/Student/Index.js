@@ -29,24 +29,47 @@ const columns = [
   },
   { id: "studentId", label: "Student Id", align: "center", minWidth: 100 },
   { id: "name", align: "center", label: "Student Name", minWidth: 100 },
-  // { id: "mobileNumber", align: "center", label: "Mobile Number", minWidth: 100, },
-  // { id: "adharNumber", align: "center", label: "Aadhaar Number", minWidth: 100, },
-  // { id: "email", align: "center", label: "Email", minWidth: 100 },
-  // { id: "dob", align: "center", label: "DOB", minWidth: 100 },
-  // { id: "className", align: "center", label: "Class Name", minWidth: 100 },
-  // { id: "sectionName", align: "center", label: "Section Name", minWidth: 100 },
 ];
 
-const tableHeader = [
+const tabHeader = [
   { id: "mobileNumber", label: "Mobile Number" },
   { id: "adharNumber", label: "Aadhaar Number" },
   { id: "email", label: "Email" },
   { id: "dob", label: "DOB" },
+  { id: "balance", label: "Balance" },
+  { id: "previousUnregisteredYearBalance", label: "Un Balance" },
+  { id: "studentCaste", label: "Student Caste" },
+  { id: "studentReligion", label: "Student Religion" },
+  { id: "feesToBePaid", label: "Fees To Be Paid" },
+  { id: "totalFeesPaid", label: "Total Paid Fees" },
+  { id: "address1" , label: "Address 1"},
+  { id: "address2" , label: "Address 2"},
+  { id: "fatherCaste" , label: "Father Caste"},
+  { id: "fatherMobileNo" , label: "Father Mobile No"},
+  { id: "fatherName" , label: "Father Name"},
+  { id: "fatherOccupation" , label: "Father Occupation"},
+  { id: "fatherReligion" , label: "Father Religion"},
+  { id: "homeMobileNo" , label: "Home Mobile No"},
+  { id: "motherCaste" , label: "Mother Caste"},
+  { id: "motherMobileNo" , label: "Mother Mobile No"},
+  { id: "motherName" , label: "Mother Name"},
+  { id: "motherOccupation" , label: "Mother Occupation"},
+  { id: "motherReligion" , label: "Mother Religion"},
+];
+
+const academicDetails = [
+  { id: "academicBalance", label: "Academic Balance" },
+  { id: "academicFeesToBePaid", label: "Academic Paid Fees" },
+  { id: "academicTotalFeesPaid", label: "Academic Total Fees" },
+  { id: "busNumber", label: "Bus Number" },
+  { id: "busService", label: "Bus Service" },
   { id: "className", label: "Class Name" },
   { id: "sectionName", label: "Section Name" },
   { id: "discountName", label: "Discount Name" },
-  { id: "feesToBePaid", label: "Fees To Be Paid" },
-  { id: "totalFeesPaid", label: "Total Paid Fees" },
+  { id: "directorDiscount", label: "Director Discount" },
+  { id: "directorName", label: "Director Name" },
+  { id: "routeName", label: "Route Name" },
+  { id: "hasSpecialTrip", label: "Special Trip" },
 ];
 
 const Tablebox = styled("div")(({ theme }) => ({
@@ -72,8 +95,14 @@ const Bus = ({
 
   const [view, setView] = useState(false);
 
-  const studentView = student.data.map((v) => {
-    return { ...v, dob: `${v.dob[2]}-${v.dob[1]}-${v.dob[0]}` };
+  console.log("message", student);
+
+  // const studentView = student?.data?.map((v) => {
+  //   return { ...v, dob: `${v.dob[2]}-${v.dob[1]}-${v.dob[0]}` };
+  // });
+
+  const studentView = student?.data?.map((v) => {
+    return { ...v.parentDetailResponseDto, ...v.studentAcademicDetailResponseDto, ...v.studentDetailResponseDto };
   });
 
   const batchYear = useSelector((state) => state.year);
@@ -82,7 +111,19 @@ const Bus = ({
     return ye.batchYear;
   });
 
+  useEffect(()=>{
+      if(batchYear){
+        top100Films.unshift("All");
+      }
+  },[top100Films])
+
   const [filtervalue, setFiltervalue] =  useState({ batch: year, size: 10, page: 0, paid:'all', className: null, sectionName:null, studentName:null, discountUuid:null, balance: 0});
+
+  useEffect(()=>{
+    if(student.Message === "vasa"){
+      dispatch(getStudent(filtervalue));
+    }
+},[student.Message === "vasa"])
 
   useEffect(()=>{
     dispatch(getStudent(filtervalue));
@@ -102,6 +143,19 @@ const Bus = ({
     }
   }, [student]);
 
+  var  vasa = academicDetails.map((v)=>{return v});
+
+  const [tableHeader, setTableHeader] = useState(tabHeader);
+
+  useEffect(()=>{
+      if(year !== "All"){
+        setTableHeader([...tableHeader, ...vasa]);
+      }
+      else{
+        setTableHeader(tabHeader);
+      }
+  },[year])
+
   const [headvalue, setHeadvalue] = useState(columns);
   const [tablerow, setTablerow] = useState({
     id: "",
@@ -114,7 +168,22 @@ const Bus = ({
   const [tagbar, setTagbar] = useState(tableHeader);
   const [headerid, setHeaderid] = useState(null);
 
+  useEffect(()=>{
+      setTagbar(tableHeader);
+  },[tableHeader])
+
   const tabelCol = headvalue.filter((va) => va.id !== headerid);
+
+  const vvv = vasa.map((e)=>  e.id);
+
+  useEffect(()=>{
+    var head = headvalue;
+      vasa.map((e, index)=>{
+          const tabelCol2 = head.filter((va) => va.id !== vvv[index]);
+          head = tabelCol2
+          setHeadvalue(tabelCol2);
+      })
+  },[year])
 
   const tabelView = tagbar
 
@@ -278,7 +347,9 @@ const Bus = ({
                   <MenuItem value="nopaid">No Paid</MenuItem>
                 </Select>
               </FormControl>
-              <FormControl sx={{minWidth: '150px'}}>
+             {year !== 'All' &&
+             <>
+             <FormControl sx={{minWidth: '150px'}}>
                 <InputLabel size="small" id="demo-simple-select-label">Class Name</InputLabel>
                 <Select
                   size="small"
@@ -311,7 +382,6 @@ const Bus = ({
                       : null}
                 </Select>
               </FormControl>
-              <TextField size="small" sx={{maxWidth: '150px'}} id="outlined-basic" name="studentName" onChange={formik.handleChange} value={formik.values.studentName} label="Student Name" variant="outlined" />
               <FormControl sx={{minWidth: '150px'}}>
                 <InputLabel size="small" id="demo-simple-select-label">Discount Name</InputLabel>
                 <Select
@@ -327,6 +397,9 @@ const Bus = ({
                       })}
                 </Select>
               </FormControl>
+              </> 
+              }
+              <TextField size="small" sx={{maxWidth: '150px'}} id="outlined-basic" name="studentName" onChange={formik.handleChange} value={formik.values.studentName} label="Student Name" variant="outlined" />
               <TextField size="small" sx={{maxWidth: '150px'}} id="outlined-basic" name="balance" onChange={formik.handleChange} value={formik.values.balance} label="Balance" variant="outlined" />
               <Button variant="contained" size="large" type="submit" sx={{color: '#fff'}}>
                 Search

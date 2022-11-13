@@ -14,7 +14,7 @@ export default ( state = initialstate, action) => {
             console.log("fetchStudent", action.payload);
             return  {
                 ...state, 
-                data : action.payload.data.studentDetailResponseList,
+                data : action.payload.data.studentResponseList,
                 successMessage: false,
                 Message: action.payload.status, 
                 showLoading: false 
@@ -31,10 +31,10 @@ export default ( state = initialstate, action) => {
             console.log("createstudent", action.payload);
                 return {
                     ...state,
-                    data: [...state.data, action.payload.data],
+                    // data: [...state.data, action.payload.data],
                     successMessage: true,
                     showLoading: false,
-                    Message: action.payload.status,
+                    Message: action.payload.stu,
                 }
         case UPDATE :
                 return {
