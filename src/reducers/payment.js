@@ -19,14 +19,17 @@ export default ( state = initialstate, action) => {
                 showLoading: false 
             } 
         case PAYMENT :
-            const year1 = action.payload.year;
-            let studentBatchResponseMap = { ...state.data.studentBatchResponseMap };
-            studentBatchResponseMap[year1].feesPaymentTableHistory.push(
-              action.payload.data.objectList
-            );
-            studentBatchResponseMap[year1].paymentInputOptions = {...action.payload.data.paymentInputOptions};
+            // const year1 = action.payload.year;
+            // let studentBatchResponseMap = { ...state.data.studentBatchResponseMap };
+            // studentBatchResponseMap[year1].feesPaymentTableHistory.push(
+            //   action.payload.data.objectList
+            // );
+            // studentBatchResponseMap[year1].paymentInputOptions = {...action.payload.data.paymentInputOptions};
             return {
-                ...state
+                ...state,
+                showLoading: false,
+                successMessage: false,
+                Message: action.payload.stu
             }
         case LOADING :
                  return{

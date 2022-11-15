@@ -93,7 +93,6 @@ const Bus = ({
   const DisCount = useSelector((state)=> state.discount);
   const dispatch = useDispatch();
 
-  const [view, setView] = useState(false);
 
   console.log("message", student);
 
@@ -275,14 +274,6 @@ const Bus = ({
   return (
     <>
       <Tablebox>
-        {view ? (
-          <Viewstudent
-            setView={setView}
-            setCurrentid={setCurrentid}
-            currentId={currentId}
-            year={year}
-          ></Viewstudent>
-        ) : (
           <div>
             <Box
               sx={{
@@ -431,7 +422,6 @@ const Bus = ({
               columns={headvalue}
               rows={studentView}
               setHeaderid={setHeaderid}
-              setView={setView}
               tagbar={tagbar}
               handleClick={handleClick}
               page={page}
@@ -441,7 +431,6 @@ const Bus = ({
               headvalue={headvalue}
             />
           </div>
-        )}
       </Tablebox>
     </>
   );

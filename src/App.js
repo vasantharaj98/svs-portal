@@ -4,6 +4,7 @@ import Class from "./Pages/Class/index.js";
 import Bus from "./Pages/Bus/index.js";
 import Discount from "./Pages/Discount/index.js";
 import Student from "./Pages/Student/Index.js";
+import ViewStudent from "./Pages/Student/viewStudent.js";
 import Fees from "./Pages/Fees/Index.js";
 import Year from "./Pages/Year/index";
 import Login from "./Pages/Login/login";
@@ -27,7 +28,22 @@ import { signIn } from "./actions/auth.js";
 function App() {
   const { auth, setAuth } = useContext(AuthContext);
 
-  const [currentId, setCurrentid] = useState(null);
+  const [currentId, setCurrentid] = useState();
+
+  useEffect(()=>{
+      var id = sessionStorage.getItem("currentid");
+      if(id){
+        console.log("id", id);
+        setCurrentid(id);
+      }
+  },[]);
+
+  useEffect(()=>{
+    if(currentId !== "")
+    sessionStorage.setItem("currentid", currentId)
+},[currentId])
+
+  console.log("curentid", currentId);
 
   const [vchange, setVchange] = useState(false);
 
@@ -74,6 +90,11 @@ function App() {
                 />
               }
               exact
+            ></Route>
+            <Route
+              path="/studentdetail/:currentId"
+              element={currentId && <ViewStudent currentId={currentId}
+              setCurrentid={setCurrentid} year={year}/>}
             ></Route>
             <Route
               path="/academicyear"

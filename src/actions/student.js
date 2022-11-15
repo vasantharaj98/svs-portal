@@ -1,5 +1,6 @@
 import * as api from '../api/api.js';
 import { FETCHSTUDENT, CREATESTUDENT, UPDATE, DELETE, LOADING, TOAST } from '../constants/actionTypes.js';
+import { LOGOUT } from '../constants/actionTypes.js';
 
 
 export const getStudent = (val) => async (dispatch) => {
@@ -9,6 +10,7 @@ export const getStudent = (val) => async (dispatch) => {
         dispatch({ type : FETCHSTUDENT, payload: data});
     } catch (error) {
         console.log(error);
+        dispatch({ type : "UNAUTHORIZED"});
     }
 }
 

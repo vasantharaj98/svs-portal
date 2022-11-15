@@ -25,6 +25,7 @@ const style = {
 
 const Adddata = ({currentId, setCurrentid, button, year}) => {
   const [open, setOpen] = useState(false);
+  console.log("open", open);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
   setOpen(false);
@@ -43,7 +44,7 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
 
 
   useEffect(()=>{
-    if(currentId){
+    if(updatePost && currentId){
       setOpen(true);
       setPostdata(updatePost);
     }
@@ -141,7 +142,7 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
           id="outlined-read-only-input"
           label="Total Fees"
           type="number"
-          value={ parseInt(postData.twoWayFees) + parseInt(postData.fullFees ) + parseInt(postData.specialTrip) }         
+          value={ parseInt(postData?.twoWayFees) + parseInt(postData?.fullFees ) + parseInt(postData?.specialTrip) }         
           InputProps={{
             readOnly: true,
           }}
@@ -150,7 +151,7 @@ const Adddata = ({currentId, setCurrentid, button, year}) => {
       <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: 40, marginTop: 15}}>
         <Button variant="contained" color='primary' size="large" 
         type='submit'
-        onClick= { ()=> setPostdata({...postData, totalFees: (parseInt(postData.twoWayFees) + parseInt(postData.fullFees ) + parseInt(postData.specialTrip))})}
+        onClick= { ()=> setPostdata({...postData, totalFees: (parseInt(postData?.twoWayFees) + parseInt(postData?.fullFees ) + parseInt(postData?.specialTrip))})}
         >Submit</Button>
       </div> 
       </Box>

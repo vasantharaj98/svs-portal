@@ -63,11 +63,10 @@ const Adddata = ({button, year, data, currentId}) => {
 
       useEffect(()=>{
           formik.setFieldValue('studentUuid', currentId);
-          formik.setFieldValue('year',  year);
+          formik.setFieldValue('batchYear',  year);
           formik.setFieldValue('term1',  data.term1FeesMax);
           formik.setFieldValue('term2',  data.term2FeesMax);
           formik.setFieldValue('term3',  data.term3FeesMax);
-          formik.setFieldValue('tuitionFees',  data.tuitionFeesMax);
           formik.setFieldValue('bookFees',  data.bookFeesMax);
           formik.setFieldValue('twoWayFees',  data.twoWayFeesMax);
           formik.setFieldValue('specialTrip',  data.specialTripFeesMax);
@@ -88,11 +87,10 @@ const Adddata = ({button, year, data, currentId}) => {
   const formik = useFormik({
     initialValues: {
       studentUuid: '',
-      year:'',
+      batchYear:'',
       term1: 0,
       term2: 0,
       term3: 0,
-      tuitionFees: 0,
       bookFees: 0,
       twoWayFees: 0,
       specialTrip: 0,
@@ -228,30 +226,6 @@ const Adddata = ({button, year, data, currentId}) => {
                   {formik.touched.term3 && formik.errors.term3 ? (
                     <div style={{ marginLeft: "15px", color: "red" }}>
                       {formik.errors.term3}
-                    </div>
-                  ) : null}
-                </Grid> : null
-                }
-                {data.tuitionFees ?
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    sx={{
-                      "&.MuiTextField-root": {
-                        margin: "15px",
-                        marginBottom: 0,
-                        width: "100%",
-                      },
-                    }}
-                    type="number"
-                    name="tuitionFees"
-                    label="Tuition Fees"
-                    value={formik.values.tuitionFees}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.tuitionFees && formik.errors.tuitionFees ? (
-                    <div style={{ marginLeft: "15px", color: "red" }}>
-                      {formik.errors.tuitionFees}
                     </div>
                   ) : null}
                 </Grid> : null

@@ -21,6 +21,7 @@ import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { deleteBusfees, toast } from '../../actions/busfees';
 import { viewStudent, loading } from '../../actions/payment';
+import { Link } from 'react-router-dom';
 
 
   const TableCusContainer = styled(TableContainer)(({ theme }) => ({
@@ -43,7 +44,7 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
   const dispatch = useDispatch();
 
     const handleView = (id) =>{
-      dispatch(viewStudent(id, setView));
+      dispatch(viewStudent(id));
       dispatch(loading(true));
       setCurrentid(id);
     }
@@ -87,12 +88,12 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
       }
     },[tagbar]);
 
-    useEffect(()=>{
-      tag?.map(va =>
-        va.map( i=>
-          console.log("vasa", i))
-        )
-    },[tag])
+    // useEffect(()=>{
+    //   tag?.map(va =>
+    //     va.map( i=>
+    //       console.log("vasa", i))
+    //     )
+    // },[tag])
 
 return (
   <>
@@ -194,17 +195,21 @@ return (
                               return (
                                 <>
                                   {a.view && (
+                                    <Link
+                                    onClick={() => handleView(row.uniqueId)}
+                                    to={`/studentdetail/${row.uniqueId}`}
+                                    >
                                     <Button
-                                      onClick={() => handleView(row.uniqueId)}
                                       sx={{
                                         background: "#3d07dc",
                                         marginRight: 2,
                                       }}
-                                    >
+                                      >
                                       <VisibilityIcon
                                         sx={{ color: "#fff", fontSize: 20 }}
                                       ></VisibilityIcon>
-                                    </Button>
+                                      </Button>
+                                    </Link>
                                   )}
                                   {a.edit && (
                                     <Button
