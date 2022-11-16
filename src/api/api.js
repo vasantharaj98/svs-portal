@@ -1,53 +1,65 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const url = 'http://43.205.97.103';
+export const url = process.env.REACT_APP_CONNECTION_URL;
 
-const API = axios.create({baseURL : url});
+const API = axios.create({ baseURL: url });
 
-API.interceptors.request.use((req)=>{
-    if(localStorage.getItem('login')){
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('login')).data.jwt}`;
-    }
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("login")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("login")).data.jwt
+    }`;
+  }
 
-    return req;
+  return req;
 });
 
-export const signin = (data) => API.post('/login', data);
-export const signout = () => API.put('/logoutUser');
+export const signin = (data) => API.post(process.env.REACT_APP_LOGIN, data);
+export const signout = () => API.put(process.env.REACT_APP_LOGOUT);
 
 //year
 
-export const newYear = (year) => API.post('/api/academicYears/addYear', year);
-export const fetchYear = () => API.get('/api/academicYears/findAll');
+export const newYear = (year) => API.post(process.env.REACT_APP_ADD_YEAR, year);
+export const fetchYear = () => API.get(process.env.REACT_APP_FIND_ALL_YEAR);
 
 // Busfees
 
-export const fetchBusfees = (year) => API.get(`/api/busFees/findAll/${year}`);
-export const createBusfees = (newfees) => API.post('/api/busFees/addBusFees', newfees);
+export const fetchBusfees = (year) =>
+  API.get(`${process.env.REACT_APP_FIND_ALL_BUS_FEES}${year}`);
+export const createBusfees = (newfees) =>
+  API.post(process.env.REACT_APP_ADD_BUS_FEES, newfees);
 // export const updateFees = (id, updatefees) => axios.patch(`${url}/${id}`, updatefees);
 // export const deleteFees = (id) => axios.delete(`${url}/${id}`);
 
 // Class
 
-export const fetchClass = () => API.get('/api/classSections/findAll');
-export const createClass = (val) => API.post('/api/classSections/addClassSection', val);
+export const fetchClass = () => API.get(process.env.REACT_APP_FIND_ALL_CLASS);
+export const createClass = (val) =>
+  API.post(process.env.REACT_APP_ADD_CLASS, val);
 
 // Class
 
-export const fetchDiscount = () => API.get('/api/discount/findAll');
-export const createDiscount = (val) => API.post('/api/discount/add', val);
+export const fetchDiscount = () =>
+  API.get(process.env.REACT_APP_FIND_ALL_DISCOUNT);
+export const createDiscount = (val) =>
+  API.post(process.env.REACT_APP_ADD_DISOCUNT, val);
 
 // Academic Fees
 
-export const fetchFees = (year) => API.get(`/api/tuitionFees/findAll/${year}`);
-export const createFees = (val) => API.post('/api/tuitionFees/addTuitionFees', val);
+export const fetchFees = (year) =>
+  API.get(`${process.env.REACT_APP_FIND_ALL_TUITION_FEES}${year}`);
+export const createFees = (val) =>
+  API.post(process.env.REACT_APP_ADD_TUITION_FEES, val);
 
 // Student
 
-export const fetchStudent = (val) => API.post('/api/studentList', val);
-export const createStudent = (val) => API.post('/api/addStudentDetail', val);
+export const fetchStudent = (val) =>
+  API.post(process.env.REACT_APP_FIND_ALL_STUDENT, val);
+export const createStudent = (val) =>
+  API.post(process.env.REACT_APP_ADD_STUDENT, val);
 
 // Payment
-export const payStudent = (val) => API.post('/api/feesPayment/add', val);
-export const viewStudent = (id) => API.get(`/api/feesPayment/getAllStudentDetail/${id}`);
-
+export const payStudent = (val) =>
+  API.post(process.env.REACT_APP_ADD_FEES_PAYMENT, val);
+export const viewStudent = (id) =>
+  API.get(`${process.env.REACT_APP_FIND_ALL_STUDNET_DETAIL}${id}`);
