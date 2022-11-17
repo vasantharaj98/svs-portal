@@ -551,7 +551,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {payment?.data?.previousFeesPaymentResponseList.map((row) => (
+                        {payment?.data?.previousFeesPaymentResponseList?.map((row) => (
                           <TableRow
                             key={row}
                             sx={{

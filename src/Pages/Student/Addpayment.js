@@ -64,12 +64,12 @@ const Adddata = ({button, year, data, currentId}) => {
       useEffect(()=>{
           formik.setFieldValue('studentUuid', currentId);
           formik.setFieldValue('batchYear',  year);
-          formik.setFieldValue('term1',  data.term1FeesMax);
-          formik.setFieldValue('term2',  data.term2FeesMax);
-          formik.setFieldValue('term3',  data.term3FeesMax);
-          formik.setFieldValue('bookFees',  data.bookFeesMax);
-          formik.setFieldValue('twoWayFees',  data.twoWayFeesMax);
-          formik.setFieldValue('specialTrip',  data.specialTripFeesMax);
+          formik.setFieldValue('term1',  data?.term1FeesMax);
+          formik.setFieldValue('term2',  data?.term2FeesMax);
+          formik.setFieldValue('term3',  data?.term3FeesMax);
+          formik.setFieldValue('bookFees',  data?.bookFeesMax);
+          formik.setFieldValue('twoWayFees',  data?.twoWayFeesMax);
+          formik.setFieldValue('specialTrip',  data?.specialTripFeesMax);
           if(date){
           formik.setFieldValue('payedOn',  date);
           }
@@ -160,7 +160,7 @@ const Adddata = ({button, year, data, currentId}) => {
               onSubmit={formik.handleSubmit}
             >
               <Grid container spacing={2}>
-                {data.term1fees ? 
+                {data?.term1fees ? 
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
@@ -183,7 +183,7 @@ const Adddata = ({button, year, data, currentId}) => {
                   ) : null}
                 </Grid> : null
                 }
-                { data.term2fees ?
+                { data?.term2fees ?
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
@@ -206,7 +206,7 @@ const Adddata = ({button, year, data, currentId}) => {
                   ) : null}
                 </Grid> : null
                 }
-                {data.term3fees ? 
+                {data?.term3fees ? 
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
@@ -230,7 +230,7 @@ const Adddata = ({button, year, data, currentId}) => {
                   ) : null}
                 </Grid> : null
                 }
-                {data.bookFees ?
+                {data?.bookFees ?
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
@@ -253,7 +253,7 @@ const Adddata = ({button, year, data, currentId}) => {
                   ) : null}
                 </Grid> : null
                   }
-                  {data.twoWayFees ?
+                  {data?.twoWayFees ?
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
@@ -277,7 +277,7 @@ const Adddata = ({button, year, data, currentId}) => {
                   ) : null}
                 </Grid> : null
                   }
-                   {data.specialBusFees ?
+                   {data?.specialBusFees ?
                 <Grid item xs={12} md={6}>
                   <TextField
                     sx={{
