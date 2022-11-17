@@ -516,8 +516,63 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
               }
             </Grid>
           </div>
+          {studentDetail?.previousUnregisteredYearBalance !== 0 &&
+              <div
+                style={{ marginTop: 50, background: "rgb(251 249 255)", padding: 15 }}
+              >
+                <Typography variant="h6">Previous Fees Payment</Typography>
+                <Grid container style={{ marginTop: 2 }} spacing={2}>
+                  <Grid item xs={2}>
+                    <div>
+                      <Typography
+                        variant="p"
+                        color="secondary"
+                        sx={{ width: "100%", textAlign: "left" }}
+                      >
+                        Previous Fees Payment:
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{ width: "100%", textAlign: "left",fontSize: 17, fontWeight: 600 }}
+                      >
+                        {studentDetail?.previousUnregisteredYearBalance}
+                      </Typography>
+                    </div>
+                  </Grid>
+                </Grid>
+               <Adddata button="Add Payment"></Adddata>
+                <div style={{ marginTop: 15 }}>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                      <TableHead>
+                        <TableRow>
+                            <TableCell align="left">Payedon</TableCell>
+                            <TableCell align="left">Amount</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {payment?.data?.previousFeesPaymentResponseList.map((row) => (
+                          <TableRow
+                            key={row}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                            }}
+                          >
+                            {row.map((v) => (
+                              <TableCell component="th" scope="row">
+                                {v}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
+              </div>
+            
+          }
           {studentView?.studentBatchResponseMap &&  Object.values(studentView?.studentBatchResponseMap).map((v)=>{
-            console.log("v", v);
             return (
               <div
                 style={{ marginTop: 50, background: "rgb(251 249 255)", padding: 15 }}
@@ -622,7 +677,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
                         variant="h6"
                         sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                       >
-                        {v?.studentAcademicDetailResponseDto?.academicBalance}
+                        {v?.paymentInputOptions?.academicBalance}
                       </Typography>
                     </div>
                   </Grid>
@@ -639,7 +694,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
                         variant="h6"
                         sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                       >
-                        {v?.studentAcademicDetailResponseDto?.academicFeesToBePaid}
+                        {v?.paymentInputOptions?.academicTotalFeesToBePaid}
                       </Typography>
                     </div>
                   </Grid>
@@ -656,7 +711,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
                         variant="h6"
                         sx={{ width: "100%", textAlign: "left", fontSize: 17, fontWeight: 600 }}
                       >
-                        {v?.studentAcademicDetailResponseDto?.academicTotalFeesPaid}
+                        {v?.paymentInputOptions?.academicTotalFeesPaid}
                       </Typography>
                     </div>
                   </Grid>

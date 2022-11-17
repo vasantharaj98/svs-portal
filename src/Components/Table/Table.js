@@ -79,7 +79,6 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
       var arrays = [], size = 10;
       for (let i = 0; i < tagbar?.length; i += size)
       arrays.push(tagbar.slice(i, i + size));
-      console.log("arrays", arrays);
       if(tag === null){
         setTag(arrays)
       }
@@ -87,13 +86,6 @@ const Schooltable = ({setCurrentid, columns, rows, setView, setHeaderid, tagbar,
         setTag(arrays)
       }
     },[tagbar]);
-
-    // useEffect(()=>{
-    //   tag?.map(va =>
-    //     va.map( i=>
-    //       console.log("vasa", i))
-    //     )
-    // },[tag])
 
 return (
   <>
