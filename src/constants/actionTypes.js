@@ -23,3 +23,4 @@ export const FETCHSTUDENT = "FETCH_STUDENT";
 
 export const VIEWSTUDENT = "VIEW_STUDENT";
 export const PAYMENT = "PAYMENT";
+export const PREVPAYMENT = "PREVPAYMENT"

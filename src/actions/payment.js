@@ -1,5 +1,5 @@
 import * as api from '../api/api.js';
-import {VIEWSTUDENT, PAYMENT, LOADING, TOAST } from '../constants/actionTypes.js';
+import {VIEWSTUDENT, PAYMENT, LOADING, TOAST, PREVPAYMENT } from '../constants/actionTypes.js';
 
 export const viewStudent = (sId) => async (dispatch) => {
     try {
@@ -13,7 +13,16 @@ export const viewStudent = (sId) => async (dispatch) => {
 export const paymentStudent = (value) => async (dispatch) => {
     try {
         const {data } =await api.payStudent(value);
-        data.year = value.year;
+        data.stu = "vasa";
+        dispatch({ type : PREVPAYMENT, payload: data});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const prevPaymentStudent = (value) => async (dispatch) => {
+    try {
+        const {data } =await api.prevPayStudent(value);
         data.stu = "vasa";
         dispatch({ type : PAYMENT, payload: data});
     } catch (error) {

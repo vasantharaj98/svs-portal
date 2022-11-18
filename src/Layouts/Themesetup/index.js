@@ -5,7 +5,7 @@ export const theme = createTheme({
     palette: {
       primary: {
         // Black and green play nicely together.
-        main: '#000',
+        main: '#fff',
         light: '#e0e0e0',
       },
       secondary: {
@@ -18,7 +18,8 @@ export const theme = createTheme({
       },
       buttoncolor: {
         // This is green.A700 as hex.
-        main: '#3d07dc',
+        main:'#1C74F2',
+        light: '#3d07dc',
       },
     },
   });

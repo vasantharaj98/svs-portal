@@ -13,6 +13,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Adddata from './Addpayment';
+import Addprevdata from './Addprevpayment'
 import { viewStudent, loading } from '../../actions/payment';
 import { Link } from 'react-router-dom';
 
@@ -59,7 +60,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
 
  const miniTable = splitKeyValue(payment?.data?.miniTable);
 
- console.log("minitable", miniTable?.map((e)=> e.year));
+ console.log("minitable", payment.data);
 
  const studentView = payment.data;
 
@@ -540,7 +541,7 @@ const ViewStudent = ({ year, setCurrentid, currentId}) => {
                     </div>
                   </Grid>
                 </Grid>
-               <Adddata button="Add Payment"></Adddata>
+               <Addprevdata button="Add Previous Payment" data={studentDetail?.previousUnregisteredYearBalance} currentId={currentId}></Addprevdata>
                 <div style={{ marginTop: 15 }}>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">

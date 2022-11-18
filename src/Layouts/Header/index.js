@@ -238,7 +238,7 @@ useEffect(()=>{
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       { showLoader  && <Loader></Loader> }
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{boxShadow:'0px 2px 10px #0000001c'}}>
         <Toolbar sx={{'&.MuiToolbar-root':{paddingLeft: 4}}}>
           <IconButton
             color="inherit"
@@ -252,34 +252,37 @@ useEffect(()=>{
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{width:'100%'}}>
+          <Typography variant="h6" noWrap component="h6" sx={{width:'100%', color: "#1C74F2"}}>
            SVS School
           </Typography>
           <div style={{width:'100%',textAlign: 'end', display:'flex', alignItems: 'center'}}>
-          <Typography variant="p" noWrap component="div" sx={{width:'100%', marginRight: 2}}>
+          <Typography variant="p" noWrap component="p" sx={{width:'100%', marginRight: 2}}>
            Welcome, Admin
           </Typography>
-          <Button variant="outlined" sx={{color:'#fff', borderColor:'#fff'}} onClick={handleLogout}>Logout</Button>
+          <Button variant="outlined" sx={{color:'#1C74F2', borderColor:'#1C74F2'}} onClick={handleLogout}>Logout</Button>
           </div>
         </Toolbar>
       </AppBar>
       <Drawer onMouseOver={handleDrawerOpen} onMouseLeave={handleDrawerClose}  variant="permanent" open={open}  
       sx={{
         '& .MuiDrawer-paper': {
-          background : '#000',
-          color : '#fff',
+          background : '#fff',
+          color : '#000',
           paddingRight: 1,
           paddingLeft: 1,
+          zIndex: 11111
         },
       }}
       > 
         <DrawerHeader sx={{justifyContent : 'flex-start'}}>
-          <IconButton sx={{color : '#fff'}}>
-            {theme.direction === 'rtl' ? <CloseIcon /> : <CloseIcon />}
+          <IconButton sx={{color : '#000', marginRight: 3}}>
+            {!open ? <MenuIcon /> : <CloseIcon />}
           </IconButton>
+          <Typography variant="h6" noWrap component="h6" sx={{width:'100%', color: "#1C74F2"}}>
+           SVS School
+          </Typography>
         </DrawerHeader>
-        <Divider />
-        <List>
+        <List sx={{marginTop: 2}}>
           {menus.map((menu, index) => {
           
           return(
@@ -300,12 +303,12 @@ useEffect(()=>{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : '#fff'
+                    color : '#000'
                   }}
                 >
                 {< menu.icon />}
                 </ListItemIcon>
-                <ListItemText primary={menu.text} sx={{ opacity: open ? 1 : 0 , color: '#fff', textDecoration: 'none' }} />
+                <ListItemText primary={menu.text} sx={{ opacity: open ? 1 : 0 , color: '#000', textDecoration: 'none' }} />
               </ListItemButton>
               </Link>
             </ListItem>
@@ -327,7 +330,7 @@ useEffect(()=>{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : '#fff'
+                    color : '#000'
                   }}
                 >
                 {< menu.icon />}
@@ -338,20 +341,20 @@ useEffect(()=>{
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : '#fff'
+                    color : '#000'
                   }}
                 >
                 {submenu ? < ArrowDropUp /> : < ArrowDropDown />}
                 </ListItemIcon>
                 }
-                <ListItemText primary={menu.text} sx={{ opacity: open ? 1 : 0 , color: '#fff', textDecoration: 'none' }} />
+                <ListItemText primary={menu.text} sx={{ opacity: open ? 1 : 0 , color: '#000', textDecoration: 'none' }} />
                 { open && 
                 <ListItemIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
                   justifyContent: 'center',
-                  color : '#fff'
+                  color : '#000'
                 }}
               >
               {submenu ? < ArrowDropUp /> : < ArrowDropDown />}
@@ -379,12 +382,12 @@ useEffect(()=>{
                         minWidth: 0,
                         mr: open ? 3 : 'auto',
                         justifyContent: 'center',
-                        color : '#fff'
+                        color : '#000'
                       }}
                     >
                     {< subm.icon />}
                     </ListItemIcon>
-                    <ListItemText primary={subm.text} sx={{ opacity: open ? 1 : 0 , color: '#fff', textDecoration: 'none' }} />
+                    <ListItemText primary={subm.text} sx={{ opacity: open ? 1 : 0 , color: '#000', textDecoration: 'none' }} />
                   </ListItemButton>
                   </Link>
                 </ListItem>

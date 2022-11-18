@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { VIEWSTUDENT, PAYMENT,  LOADING, TOAST } from "../constants/actionTypes";
+import { VIEWSTUDENT, PAYMENT,  LOADING, TOAST, PREVPAYMENT } from "../constants/actionTypes";
 
 const initialstate = {
         data : [],
@@ -31,6 +31,13 @@ export default ( state = initialstate, action) => {
                 successMessage: false,
                 Message: action.payload.stu
             }
+            case PREVPAYMENT :
+                return {
+                    ...state,
+                    showLoading: false,
+                    successMessage: false,
+                    Message: action.payload.stu
+                }
         case LOADING :
                  return{
                     ...state,

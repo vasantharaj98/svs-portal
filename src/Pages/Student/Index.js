@@ -74,8 +74,12 @@ const academicDetails = [
 
 const Tablebox = styled("div")(({ theme }) => ({
   marginTop: 80,
-  marginLeft: 80,
-  padding: theme.spacing(0, 3),
+  marginLeft: 98,
+  marginRight: 18,
+  borderRadius: 10,
+  padding: theme.spacing(2, 2),
+  boxShadow:'0px 0px 10px #0000000a',
+  background: '#fff'
 }));
 
 const Bus = ({
@@ -298,12 +302,10 @@ const Bus = ({
              autoComplete="off"
              onSubmit={formik.handleSubmit}
               sx={{
-                background: "#fafafa",
-                padding: 2,
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "end",
-                my: "10px",
+                my: "20px",
                 flexWrap: "wrap",
                 gap: "15px",
               }}

@@ -63,3 +63,6 @@ export const payStudent = (val) =>
   API.post(process.env.REACT_APP_ADD_FEES_PAYMENT, val);
 export const viewStudent = (id) =>
   API.get(`${process.env.REACT_APP_FIND_ALL_STUDNET_DETAIL}${id}`);
+export const prevPayStudent = (val) =>
+  API.post(process.env.REACT_APP_PREV_FEES_PAYMENT, val);
+  

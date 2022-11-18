@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import './App.css';
 import Header from "./Layouts/Header/index.js";
 import Class from "./Pages/Class/index.js";
 import Bus from "./Pages/Bus/index.js";
@@ -24,6 +25,8 @@ import { getDiscount } from "./actions/discount";
 import { getFees } from "./actions/fees.js";
 import { getStudent } from "./actions/student.js";
 import { signIn } from "./actions/auth.js";
+
+
 
 function App() {
   const { auth, setAuth } = useContext(AuthContext);
